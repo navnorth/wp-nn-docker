@@ -5,5 +5,8 @@
 - Tools / Network Setup
 - choose Sub-domains option
 - docker-compose exec wordpress bash
-    Follow instrutions for wp-config.php and .htaccess modifications
+- Follow instructions for wp-config.php and .htaccess modifications
+
+* Note - only runs on local port 80 due to WordPress network limitations
+
 
