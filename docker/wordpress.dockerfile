@@ -4,4 +4,4 @@ RUN sed -r -e 's/\r$//' /usr/src/wordpress/wp-config-sample.php \
 	&& chown --reference /usr/src/wordpress/wp-config-sample.php temp.php \
 	&& mv temp.php /usr/src/wordpress/wp-config-sample.php
 RUN apt-get update
-RUN apt-get install nano vim
+RUN apt-get install -y nano vim mysql-client
