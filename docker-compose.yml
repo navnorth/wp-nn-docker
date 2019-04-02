@@ -19,7 +19,7 @@ services:
        context: ./docker
        dockerfile: wordpress.dockerfile
      volumes:
-       - wp_data:/var/www/html
+       - ./html:/var/www/html
      ports:
        - "80:80"
      restart: on-failure
@@ -30,6 +30,4 @@ services:
        WORDPRESS_DB_NAME: wordpress
 volumes:
     db_data:
-      driver: local
-    wp_data:
       driver: local
