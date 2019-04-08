@@ -13,3 +13,6 @@
 [submodule "html/wp-content/plugins/wp-gap-analysis"]
 	path = html/wp-content/plugins/wp-gap-analysis
 	url = https://github.com/navnorth/wp-gap-analysis.git
+[submodule "html/wp-content/themes/wp-nn-theme"]
+	path = html/wp-content/themes/wp-nn-theme
+	url = https://github.com/navnorth/wp-nn-theme.git
