@@ -1,0 +1,12 @@
+[submodule "html/wp-content/themes/wp-nn-theme"]
+	path = html/wp-content/themes/wp-nn-theme
+	url = https://github.com/navnorth/wp-nn-theme.git
+[submodule "html/wp-content/plugins/wp-oer"]
+	path = html/wp-content/plugins/wp-oer
+	url = https://github.com/navnorth/wp-oer.git
+[submodule "html/wp-content/plugins/wp-academic-standards"]
+	path = html/wp-content/plugins/wp-academic-standards
+	url = https://github.com/navnorth/wp-academic-standards.git
+[submodule "html/wp-content/plugins/wp-curriculum"]
+	path = html/wp-content/plugins/wp-curriculum
+	url = https://github.com/navnorth/wp-curriculum.git
