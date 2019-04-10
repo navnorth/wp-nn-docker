@@ -7,9 +7,11 @@ A few steps to run before your initial setup, just to make sure we don't run int
 1) This only runs on local port 80 due to WordPress network limitations, so first let's make sure your host machine isn't running anything on port 80 already
 
 Most Unix:
+
     netstat -tulpn | grep --color :80
 
 Mac:
+
     lsof -PiTCP -sTCP:LISTEN | grep --color :80
 
 
@@ -17,7 +19,10 @@ Mac:
 
     sudo sed -i -e '$a\'$'\n''127.0.0.1   localhost.localdomain oet.localhost.localdomain oese.localhost.localdomain oii.localhost.localdomain' /etc/hosts
 
-if network site names are known, also add site1.localhost.localdomain etc.
+3) Make sure your submodules have their code in place
+
+    host> cd <wp-nn-docker-directory>
+    host> git submodule update
 
 ## Start
 
