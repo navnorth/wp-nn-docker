@@ -30,6 +30,15 @@ services:
        WORDPRESS_DB_USER: wordpress
        WORDPRESS_DB_PASSWORD: wordpress
        WORDPRESS_DB_NAME: wordpress
+   solr:
+     image: solr
+     ports:
+     - "8983:8983"
+     volumes:
+     - solr_data:/opt/solr/server/solr/mycores
+     restart: on-failure
 volumes:
     db_data:
+      driver: local
+    solr_data:
       driver: local
