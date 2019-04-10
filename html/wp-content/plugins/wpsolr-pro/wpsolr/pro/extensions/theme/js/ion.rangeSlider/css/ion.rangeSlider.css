@@ -1,0 +1,192 @@
+/* Ion.RangeSlider
+// css version 2.0.3
+// © 2013-2014 Denis Ineshin | IonDen.com
+// ===================================================================================================================*/
+
+/* =====================================================================================================================
+// RangeSlider */
+
+.wpsolr_facet_slider_ion .irs {
+    position: relative;
+    display: block;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.wpsolr_facet_slider_ion .irs-line {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    outline: none !important;
+}
+
+.wpsolr_facet_slider_ion .irs-line-left, .wpsolr_facet_slider_ion .irs-line-mid, .wpsolr_facet_slider_ion .irs-line-right {
+    position: absolute;
+    display: block;
+    top: 0;
+}
+
+.wpsolr_facet_slider_ion .irs-line-left {
+    left: 0;
+    width: 11%;
+}
+
+.wpsolr_facet_slider_ion .irs-line-mid {
+    left: 9%;
+    width: 82%;
+}
+
+.wpsolr_facet_slider_ion .irs-line-right {
+    right: 0;
+    width: 11%;
+}
+
+.wpsolr_facet_slider_ion .irs-bar {
+    position: absolute;
+    display: block;
+    left: 0;
+    width: 0;
+}
+
+.wpsolr_facet_slider_ion .irs-bar-edge {
+    position: absolute;
+    display: block;
+    top: 0;
+    left: 0;
+}
+
+.wpsolr_facet_slider_ion .irs-shadow {
+    position: absolute;
+    display: none;
+    left: 0;
+    width: 0;
+}
+
+.wpsolr_facet_slider_ion .irs-slider {
+    position: absolute;
+    display: block;
+    cursor: default;
+    z-index: 1;
+}
+
+.wpsolr_facet_slider_ion .irs-slider.single {
+
+}
+
+.wpsolr_facet_slider_ion .irs-slider.from {
+
+}
+
+.wpsolr_facet_slider_ion .irs-slider.to {
+
+}
+
+.wpsolr_facet_slider_ion .irs-slider.type_last {
+    z-index: 2;
+}
+
+.wpsolr_facet_slider_ion .irs-min {
+    position: absolute;
+    display: block;
+    left: 0;
+    cursor: default;
+}
+
+.wpsolr_facet_slider_ion .irs-max {
+    position: absolute;
+    display: block;
+    right: 0;
+    cursor: default;
+}
+
+.wpsolr_facet_slider_ion .irs-from, .wpsolr_facet_slider_ion .irs-to, .wpsolr_facet_slider_ion .irs-single {
+    position: absolute;
+    display: block;
+    top: 0;
+    left: 0;
+    cursor: default;
+    white-space: nowrap;
+}
+
+.wpsolr_facet_slider_ion .irs-grid {
+    position: absolute;
+    display: none;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 20px;
+}
+
+.wpsolr_facet_slider_ion .irs-with-grid .irs-grid {
+    display: block;
+}
+
+.wpsolr_facet_slider_ion .irs-grid-pol {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 1px;
+    height: 8px;
+    background: #000;
+}
+
+.wpsolr_facet_slider_ion .irs-grid-pol.small {
+    height: 4px;
+}
+
+.wpsolr_facet_slider_ion .irs-grid-text {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    white-space: nowrap;
+    text-align: center;
+    font-size: 9px;
+    line-height: 9px;
+    padding: 0 3px;
+    color: #000;
+}
+
+.wpsolr_facet_slider_ion .irs-disable-mask {
+    position: absolute;
+    display: block;
+    top: 0;
+    left: -1%;
+    width: 102%;
+    height: 100%;
+    cursor: default;
+    background: rgba(0, 0, 0, 0.0);
+    z-index: 2;
+}
+
+.wpsolr_facet_slider_ion .lt-ie9 .irs-disable-mask {
+    background: #000;
+    filter: alpha(opacity=0);
+    cursor: not-allowed;
+}
+
+.wpsolr_facet_slider_ion .irs-disabled {
+    opacity: 0.4;
+}
+
+.wpsolr_facet_slider_ion .irs-hidden-input {
+    position: absolute !important;
+    display: block !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 0 !important;
+    height: 0 !important;
+    font-size: 0 !important;
+    line-height: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow: hidden;
+    outline: none !important;
+    z-index: -9999 !important;
+    background: none !important;
+    border-style: solid !important;
+    border-color: transparent !important;
+}

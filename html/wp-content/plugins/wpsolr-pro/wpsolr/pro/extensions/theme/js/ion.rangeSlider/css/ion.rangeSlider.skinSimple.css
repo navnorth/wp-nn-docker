@@ -1,0 +1,121 @@
+/* Ion.RangeSlider, Simple Skin
+// css version 2.0.3
+// © Denis Ineshin, 2014    https://github.com/IonDen
+// ===================================================================================================================*/
+
+/* =====================================================================================================================
+// Skin details */
+
+.wpsolr_facet_slider_ion.wpsolr_facet_slider_ion_skin_simple .irs-line-mid,
+.wpsolr_facet_slider_ion.wpsolr_facet_slider_ion_skin_simple .irs-line-left,
+.wpsolr_facet_slider_ion.wpsolr_facet_slider_ion_skin_simple .irs-line-right,
+.wpsolr_facet_slider_ion.wpsolr_facet_slider_ion_skin_simple .irs-bar,
+.wpsolr_facet_slider_ion.wpsolr_facet_slider_ion_skin_simple .irs-bar-edge,
+.wpsolr_facet_slider_ion.wpsolr_facet_slider_ion_skin_simple .irs-slider {
+    background: url(../img/sprite-skin-simple.png) repeat-x;
+}
+
+.wpsolr_facet_slider_ion.wpsolr_facet_slider_ion_skin_simple .irs {
+    height: 40px;
+}
+
+.wpsolr_facet_slider_ion.wpsolr_facet_slider_ion_skin_simple .irs-with-grid {
+    height: 60px;
+}
+
+.wpsolr_facet_slider_ion.wpsolr_facet_slider_ion_skin_simple .irs-line {
+    height: 6px;
+    top: 25px;
+}
+
+.wpsolr_facet_slider_ion.wpsolr_facet_slider_ion_skin_simple .irs-line-left {
+    height: 6px;
+    background-position: 0 -30px;
+}
+
+.wpsolr_facet_slider_ion.wpsolr_facet_slider_ion_skin_simple .irs-line-mid {
+    height: 6px;
+    background-position: 0 0;
+}
+
+.wpsolr_facet_slider_ion.wpsolr_facet_slider_ion_skin_simple .irs-line-right {
+    height: 6px;
+    background-position: 100% -30px;
+}
+
+.wpsolr_facet_slider_ion.wpsolr_facet_slider_ion_skin_simple .irs-bar {
+    height: 6px;
+    top: 25px;
+    background-position: 0 -60px;
+}
+
+.wpsolr_facet_slider_ion.wpsolr_facet_slider_ion_skin_simple .irs-bar-edge {
+    top: 25px;
+    height: 6px;
+    width: 7px;
+    background-position: 0 -90px;
+}
+
+.wpsolr_facet_slider_ion.wpsolr_facet_slider_ion_skin_simple .irs-shadow {
+    height: 1px;
+    top: 34px;
+    background: #000;
+    opacity: 0.75;
+}
+
+.wpsolr_facet_slider_ion.wpsolr_facet_slider_ion_skin_simple .lt-ie9 .irs-shadow {
+    filter: alpha(opacity=75);
+}
+
+.wpsolr_facet_slider_ion.wpsolr_facet_slider_ion_skin_simple .irs-slider {
+    width: 8px;
+    height: 15px;
+    top: 21px;
+    background-position: 0 -120px;
+}
+
+.wpsolr_facet_slider_ion.wpsolr_facet_slider_ion_skin_simple .irs-slider.state_hover, .wpsolr_facet_slider_ion.wpsolr_facet_slider_ion_skin_simple .irs-slider:hover {
+    background-position: 0 -150px;
+}
+
+.wpsolr_facet_slider_ion.wpsolr_facet_slider_ion_skin_simple .irs-min, .wpsolr_facet_slider_ion.wpsolr_facet_slider_ion_skin_simple .irs-max {
+    color: #c0c0c0;
+    font-size: 10px;
+    line-height: 1.333;
+    text-shadow: none;
+    top: 0;
+    padding: 1px 3px;
+    background: rgba(0, 0, 0, 0.1);
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+}
+
+.wpsolr_facet_slider_ion.wpsolr_facet_slider_ion_skin_simple .lt-ie9 .irs-min, .wpsolr_facet_slider_ion.wpsolr_facet_slider_ion_skin_simple .lt-ie9 .irs-max {
+    background: #3654b0;
+}
+
+.wpsolr_facet_slider_ion.wpsolr_facet_slider_ion_skin_simple .irs-from, .wpsolr_facet_slider_ion.wpsolr_facet_slider_ion_skin_simple .irs-to, .wpsolr_facet_slider_ion.wpsolr_facet_slider_ion_skin_simple .irs-single {
+    color: #000;
+    font-size: 10px;
+    line-height: 1.333;
+    text-shadow: none;
+    padding: 1px 5px;
+    background: rgba(255, 255, 255, 0.8);
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+}
+
+.wpsolr_facet_slider_ion.wpsolr_facet_slider_ion_skin_simple .lt-ie9 .wpsolr_facet_slider_ion.wpsolr_facet_slider_ion_skin_simple .irs-from, .wpsolr_facet_slider_ion.wpsolr_facet_slider_ion_skin_simple .lt-ie9 .irs-to, .wpsolr_facet_slider_ion.wpsolr_facet_slider_ion_skin_simple .lt-ie9 .irs-single {
+    background: #d8dff3;
+}
+
+.wpsolr_facet_slider_ion.wpsolr_facet_slider_ion_skin_simple .irs-grid-pol {
+    background: #777;
+}
+
+.wpsolr_facet_slider_ion.wpsolr_facet_slider_ion_skin_simple .irs-grid-text {
+    color: #e0e0e0;
+}
+
+.wpsolr_facet_slider_ion.wpsolr_facet_slider_ion_skin_simple .irs-disabled {
+}
