@@ -12,13 +12,18 @@ Get the Docker Desktop app installed if you don't already have it
 
 **Mac:** https://docs.docker.com/docker-for-mac/install/
 
-**Windows 10:** https://docs.docker.com/docker-for-windows/
+**Windows 10:** https://docs.docker.com/docker-for-windows/install/
 
 ### Step 1
 
 If you haven't checked out the repo yet, do that first. In this example and the rest of the readme we refer to the main repo directory on your local machine as <wp-nn-docker-directory>
 
     host> git clone --recurse-submodules https://github.com/navnorth/wp-nn-docker.git
+
+If you've already cloned the repo, make sure your submodules are in place or things won't work right
+
+    host> cd <wp-nn-docker-directory>
+    host> git submodule init && git submodule update
 
 ### Step 2
 
