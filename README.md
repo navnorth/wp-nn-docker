@@ -4,27 +4,46 @@
 
 A few steps to run before your initial setup, just to make sure we don't run into any issues:
 
-1) This only runs on local port 80 due to WordPress network limitations, so first let's make sure your host machine isn't running anything on port 80 already
+### Step 0
 
-Most Unix:
+Get the Docker Desktop app installed if you don't already have it
 
-    netstat -tulpn | grep --color :80
+**Ubuntu:** `> sudo apt-get update && sudo apt-get install -y docker.io docker-compose`
 
-Mac:
+**Mac:** https://docs.docker.com/docker-for-mac/install/
 
-    lsof -PiTCP -sTCP:LISTEN | grep --color :80
+**Windows 10:** https://docs.docker.com/docker-for-windows/
+
+### Step 1
+
+If you haven't checked out the repo yet, do that first. In this example and the rest of the readme we refer to the main repo directory on your local machine as <wp-nn-docker-directory>
+
+    host> git clone --recurse-submodules https://github.com/navnorth/wp-nn-docker.git
+
+### Step 2
+
+This Docker only runs on local port 80 due to WordPress network limitations, so first let's make sure your host machine isn't running *anything* on port 80 already
+
+**Most Unix:** `host> netstat -tulpn | grep --color :80`
+
+**Mac:** `host> lsof -PiTCP -sTCP:LISTEN | grep --color :80`
+
+If that gives you any output, you probably need to stop Apache or nginx before proceeding
+
+    host> sudo apachectl stop && sudo nginx -s stop
+
+### Step 3
+
+Add localhost.localdomain to /etc/hosts. If this command doesn't work, just append the line manually to your /etc/hosts file
+
+    host> sudo sed -i -e '$a\'$'\n''127.0.0.1   localhost.localdomain oet.localhost.localdomain oese.localhost.localdomain oii.localhost.localdomain' /etc/hosts
+
+To test whether this worked, make sure this command finds a host
+
+    host> ping oese.localhost.localdomain
 
 
-2) Add localhost.localdomain to /etc/hosts
-
-    sudo sed -i -e '$a\'$'\n''127.0.0.1   localhost.localdomain oet.localhost.localdomain oese.localhost.localdomain oii.localhost.localdomain' /etc/hosts
-
-3) Make sure your submodules have their code in place
-
-    host> cd <wp-nn-docker-directory>
-    host> git submodule update
-
-## Start
+## Start the Docker
 
 Start up the docker from your terminal
 
@@ -46,5 +65,26 @@ Login to WordPress with this admin account
 
     username: admin
     password: th!sN0t.H@pp3ning
+
+## Maintenance
+
+Occasional tasks to keep things up-to-date
+
+### Rebuild with latest data
+
+    host> cd <wp-nn-docker-directory>
+    host> docker-compose build --no-cache db
+    host> docker-compose up
+
+### Dump the db and save it as current
+
+    host> cd <wp-nn-docker-directory>
+    host> docker-compose exec wordpress bash
+    docker> mysqldump -u wordpress -h db -pwordpress wordpress > wp_db_dump.`date +%Y%m%d`.sql
+    docker> exit
+    host> mv html/wp_db_dump.`date +%Y%m%d`.sql docker/data/
+    host> cd docker/data/
+    host> ln -sf wp_db_dump.`date +%Y%m%d`.sql ./current.sql
+
 
 
