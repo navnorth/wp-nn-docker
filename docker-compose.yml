@@ -2,7 +2,9 @@ version: '2'
 
 services:
    db:
-     image: mysql:5.7
+     build:
+       context: ./docker
+       dockerfile: mysql.dockerfile
      volumes:
        - db_data:/var/lib/mysql
      restart: on-failure
