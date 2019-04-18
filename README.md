@@ -25,6 +25,8 @@ If you've already cloned the repo, make sure your submodules are in place or thi
     host> cd <wp-nn-docker-directory>
     host> git submodule init && git submodule update
 
+If you run into an error that says 'Server does not allow request for unadvertised object', make sure the latest changes are pushed to the submodule repo.
+
 ### Step 2
 
 This Docker only runs on local port 80 due to WordPress network limitations, so first let's make sure your host machine isn't running *anything* on port 80 already
@@ -70,6 +72,12 @@ Login to WordPress with this admin account
 
     username: admin
     password: th!sN0t.H@pp3ning
+
+If you get this error: 'Bind for 0.0.0.0:80 failed: port is already allocated', find the Container ID and stop the Docker already running on port 80:
+
+    host> docker ps -a
+    host> docker stop <id>
+
 
 ## Maintenance
 
