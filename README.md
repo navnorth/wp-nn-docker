@@ -25,6 +25,8 @@ If you've already cloned the repo, make sure your submodules are in place or thi
     host> cd <wp-nn-docker-directory>
     host> git submodule init && git submodule update
 
+If you run into an error that says 'Server does not allow request for unadvertised object', make sure the latest changes are pushed to the submodule repo.
+
 ### Step 2
 
 This Docker only runs on local port 80 due to WordPress network limitations, so first let's make sure your host machine isn't running *anything* on port 80 already
@@ -36,6 +38,11 @@ This Docker only runs on local port 80 due to WordPress network limitations, so 
 If that gives you any output, you probably need to stop Apache or nginx before proceeding
 
     host> sudo apachectl stop && sudo nginx -s stop
+
+If what you have running on port 80 is another docker, find the Container ID and stop the Docker already running on port 80:
+
+    host> docker ps -a | grep ":80->80"
+    host> docker stop <id>
 
 ### Step 3
 
@@ -55,7 +62,9 @@ Start up the docker from your terminal
     host> cd <wp-nn-docker-directory>
     host> docker-compose up
 
-Open your web browser:
+If you get this error: 'Bind for 0.0.0.0:80 failed: port is already allocated', refer back to *Step 2* for stopping other dockers.
+
+If no errors, open your web browser:
 
     http://oii.localhost.localdomain
     http://oet.localhost.localdomain
@@ -71,15 +80,18 @@ Login to WordPress with this admin account
     username: admin
     password: th!sN0t.H@pp3ning
 
+
 ## Maintenance
 
 Occasional tasks to keep things up-to-date
 
-### Rebuild with latest data
+### Refresh to the latest data
 
     host> cd <wp-nn-docker-directory>
     host> docker-compose build --no-cache db
-    host> docker-compose up
+    host> docker-compose up --detach
+    host> docker-compose exec db bash
+    host> mysql -u wordpress -h db -pwordpress wordpress < /docker-entrypoint-initdb.d/current.sql
 
 ### Dump the db and save it as current
 

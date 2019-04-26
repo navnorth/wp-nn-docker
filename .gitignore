@@ -1,19 +1,19 @@
 *.log
-wp-content/advanced-cache.php
-wp-content/backup-db/
-wp-content/backups/
-wp-content/blogs.dir/
-wp-content/cache/
-wp-content/upgrade/
-wp-content/uploads/
-wp-content/mu-plugins/
-wp-content/wp-cache-config.php
-wp-content/plugins/hello.php
+html/wp-content/advanced-cache.php
+html/wp-content/backup-db/
+html/wp-content/backups/
+html/wp-content/blogs.dir/
+html/wp-content/cache/
+html/wp-content/upgrade/
+html/wp-content/uploads/
+html/wp-content/mu-plugins/
+html/wp-content/wp-cache-config.php
+html/wp-content/plugins/hello.php
 
-/license.txt
-/readme.html
-/sitemap.xml
-/sitemap.xml.gz
+html/license.txt
+html/readme.html
+html/sitemap.xml
+html/sitemap.xml.gz
 
 # Windows thumbnail cache files
 Thumbs.db
