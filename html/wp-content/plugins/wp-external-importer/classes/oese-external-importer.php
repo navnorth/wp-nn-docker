@@ -30,18 +30,28 @@ class OeseExternalImporter
     }
  
     public function csv_import_form(){
-            echo '<div class="wrap"><div id="icon-options-general" class="icon32"><br></div>
-            <h2>WP External Importer</h2>
-              <form name="wp_importer" class="importer"  method="post" enctype="multipart/form-data">
-                <input type="file" name="fileToUpload" id="fileToUpload">
-                <input type="button" id="csv_upload" value="Upload Csv" name="submit">
-              </form>
+      $samplecsvfile = plugins_url('/assets/sample.csv', dirname(__FILE__));
+      echo '<div class="wrap">
+            <div class="oese-csv-importer">
+              <div id="icon-options-general" class="icon32"><br></div>
+                    <h2>WP External Importer</h2>
+                  <div class="form-section">  
+                    <form name="wp_importer" class="importer"  method="post" enctype="multipart/form-data">
+                      <input type="file" name="fileToUpload" id="fileToUpload">
+                      <input type="button" id="csv_upload" value="Upload Csv" name="submit">
+                    </form>
+                    <a class="csv_file" href="'.$samplecsvfile.'">Download sample csv</a>  
+                  </div>   
+               </div>       
             </div>';
     }
 
     public function enqueue(){
       //plugins_url('/assets/myscript.js', dirname(__FILE__) );
-        wp_enqueue_script( 'my_custom_script', plugins_url('/assets/myscript.js', dirname(__FILE__)));
+        wp_enqueue_script( 'my_custom_script', plugins_url('/assets/js/myscript.js', dirname(__FILE__)));
+
+        wp_enqueue_style( 'my_plugin_styles', plugins_url('/assets/css/mystyles.css', dirname(__FILE__)));
+
     }
 
     public function removeEverythingBefore($in, $before) {
