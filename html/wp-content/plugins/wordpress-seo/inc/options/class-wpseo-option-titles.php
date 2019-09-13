@@ -4,17 +4,17 @@
  */
 
 /**
- * Option: wpseo_titles
+ * Option: wpseo_titles.
  */
 class WPSEO_Option_Titles extends WPSEO_Option {
 
 	/**
-	 * @var  string  option name
+	 * @var  string  Option name.
 	 */
 	public $option_name = 'wpseo_titles';
 
 	/**
-	 * @var  array  Array of defaults for the option
+	 * @var  array  Array of defaults for the option.
 	 *        Shouldn't be requested directly, use $this->get_defaults();
 	 *
 	 * {@internal Note: Some of the default values are added via the translate_defaults() method.}}
@@ -25,7 +25,6 @@ class WPSEO_Option_Titles extends WPSEO_Option {
 		// Form fields.
 		'forcerewritetitle'      => false,
 		'separator'              => 'sc-dash',
-		'usemetakeywords'        => false,
 		'title-home-wpseo'       => '%%sitename%% %%page%% %%sep%% %%sitedesc%%', // Text field.
 		'title-author-wpseo'     => '', // Text field.
 		'title-archive-wpseo'    => '%%date%% %%page%% %%sep%% %%sitename%%', // Text field.
@@ -35,10 +34,7 @@ class WPSEO_Option_Titles extends WPSEO_Option {
 		'metadesc-home-wpseo'    => '', // Text area.
 		'metadesc-author-wpseo'  => '', // Text area.
 		'metadesc-archive-wpseo' => '', // Text area.
-		'metakey-home-wpseo'     => '', // Text field.
-		'metakey-author-wpseo'   => '', // Text field.
 
-		'noindex-subpages-wpseo' => false,
 		'noindex-author-wpseo'   => false,
 		'noindex-archive-wpseo'  => true,
 
@@ -50,32 +46,28 @@ class WPSEO_Option_Titles extends WPSEO_Option {
 		 * Uses enrich_defaults to add more along the lines of:
 		 * - 'title-' . $pt->name        => ''; // Text field.
 		 * - 'metadesc-' . $pt->name      => ''; // Text field.
-		 * - 'metakey-' . $pt->name        => ''; // Text field.
 		 * - 'noindex-' . $pt->name        => false;
 		 * - 'showdate-' . $pt->name      => false;
 		 * - 'hideeditbox-' . $pt->name      => false;
 		 *
 		 * - 'title-ptarchive-' . $pt->name    => ''; // Text field.
 		 * - 'metadesc-ptarchive-' . $pt->name  => ''; // Text field.
-		 * - 'metakey-ptarchive-' . $pt->name  => ''; // Text field.
 		 * - 'bctitle-ptarchive-' . $pt->name  => ''; // Text field.
 		 * - 'noindex-ptarchive-' . $pt->name  => false;
 		 *
 		 * - 'title-tax-' . $tax->name      => '''; // Text field.
 		 * - 'metadesc-tax-' . $tax->name    => ''; // Text field.
-		 * - 'metakey-tax-' . $tax->name    => ''; // Text field.
 		 * - 'noindex-tax-' . $tax->name    => false;
 		 * - 'hideeditbox-tax-' . $tax->name  => false;
 		 */
 	);
 
 	/**
-	 * @var  array  Array of variable option name patterns for the option
+	 * @var  array  Array of variable option name patterns for the option.
 	 */
 	protected $variable_array_key_patterns = array(
 		'title-',
 		'metadesc-',
-		'metakey-',
 		'noindex-',
 		'showdate-',
 		'hideeditbox-',
@@ -83,7 +75,7 @@ class WPSEO_Option_Titles extends WPSEO_Option {
 	);
 
 	/**
-	 * @var array  Array of sub-options which should not be overloaded with multi-site defaults
+	 * @var array  Array of sub-options which should not be overloaded with multi-site defaults.
 	 */
 	public $ms_exclude = array(
 		/* theme dependent */
@@ -92,7 +84,7 @@ class WPSEO_Option_Titles extends WPSEO_Option {
 	);
 
 	/**
-	 * @var array Array of the separator options. To get these options use WPSEO_Option_Titles::get_instance()->get_separator_options()
+	 * @var array Array of the separator options. To get these options use WPSEO_Option_Titles::get_instance()->get_separator_options().
 	 */
 	private $separator_options = array(
 		'sc-dash'   => '-',
@@ -111,11 +103,11 @@ class WPSEO_Option_Titles extends WPSEO_Option {
 	);
 
 	/**
-	 * Add the actions and filters for the option
+	 * Add the actions and filters for the option.
 	 *
 	 * @todo [JRF => testers] Check if the extra actions below would run into problems if an option
 	 * is updated early on and if so, change the call to schedule these for a later action on add/update
-	 * instead of running them straight away
+	 * instead of running them straight away.
 	 *
 	 * @return \WPSEO_Option_Titles
 	 */
@@ -127,14 +119,14 @@ class WPSEO_Option_Titles extends WPSEO_Option {
 
 
 	/**
-	 * Make sure we can recognize the right action for the double cleaning
+	 * Make sure we can recognize the right action for the double cleaning.
 	 */
 	public function end_of_init() {
 		do_action( 'wpseo_double_clean_titles' );
 	}
 
 	/**
-	 * Get the singleton instance of this class
+	 * Get the singleton instance of this class.
 	 *
 	 * @return object
 	 */
@@ -147,7 +139,7 @@ class WPSEO_Option_Titles extends WPSEO_Option {
 	}
 
 	/**
-	 * Get the available separator options
+	 * Get the available separator options.
 	 *
 	 * @return array
 	 */
@@ -155,9 +147,9 @@ class WPSEO_Option_Titles extends WPSEO_Option {
 		$separators = $this->separator_options;
 
 		/**
-		 * Allow altering the array with separator options
+		 * Allow altering the array with separator options.
 		 *
-		 * @api  array  $separator_options  Array with the separator options
+		 * @api  array  $separator_options  Array with the separator options.
 		 */
 		$filtered_separators = apply_filters( 'wpseo_separator_options', $separators );
 
@@ -169,7 +161,7 @@ class WPSEO_Option_Titles extends WPSEO_Option {
 	}
 
 	/**
-	 * Translate strings used in the option defaults
+	 * Translate strings used in the option defaults.
 	 *
 	 * @return void
 	 */
@@ -183,13 +175,17 @@ class WPSEO_Option_Titles extends WPSEO_Option {
 
 
 	/**
-	 * Add dynamically created default options based on available post types and taxonomies
+	 * Add dynamically created default options based on available post types and taxonomies.
 	 *
 	 * @return  void
 	 */
 	public function enrich_defaults() {
-
-		// Retrieve all the relevant post type and taxonomy arrays.
+		/*
+		 * Retrieve all the relevant post type and taxonomy arrays.
+		 *
+		 * WPSEO_Post_Type::get_accessible_post_types() should *not* be used here.
+		 * These are the defaults and can be prepared for any public post type.
+		 */
 		$post_type_names = get_post_types( array( 'public' => true ), 'names' );
 
 		$post_type_objects_custom = get_post_types(
@@ -207,7 +203,6 @@ class WPSEO_Option_Titles extends WPSEO_Option {
 			foreach ( $post_type_names as $pt ) {
 				$this->defaults[ 'title-' . $pt ]       = '%%title%% %%page%% %%sep%% %%sitename%%'; // Text field.
 				$this->defaults[ 'metadesc-' . $pt ]    = ''; // Text area.
-				$this->defaults[ 'metakey-' . $pt ]     = ''; // Text field.
 				$this->defaults[ 'noindex-' . $pt ]     = false;
 				$this->defaults[ 'showdate-' . $pt ]    = false;
 				$this->defaults[ 'hideeditbox-' . $pt ] = false;
@@ -225,7 +220,6 @@ class WPSEO_Option_Titles extends WPSEO_Option {
 
 				$this->defaults[ 'title-ptarchive-' . $pt->name ]    = $archive . ' %%page%% %%sep%% %%sitename%%'; // Text field.
 				$this->defaults[ 'metadesc-ptarchive-' . $pt->name ] = ''; // Text area.
-				$this->defaults[ 'metakey-ptarchive-' . $pt->name ]  = ''; // Text field.
 				$this->defaults[ 'bctitle-ptarchive-' . $pt->name ]  = ''; // Text field.
 				$this->defaults[ 'noindex-ptarchive-' . $pt->name ]  = false;
 			}
@@ -238,7 +232,6 @@ class WPSEO_Option_Titles extends WPSEO_Option {
 			foreach ( $taxonomy_names as $tax ) {
 				$this->defaults[ 'title-tax-' . $tax ]       = $archives . ' %%page%% %%sep%% %%sitename%%'; // Text field.
 				$this->defaults[ 'metadesc-tax-' . $tax ]    = ''; // Text area.
-				$this->defaults[ 'metakey-tax-' . $tax ]     = ''; // Text field.
 				$this->defaults[ 'hideeditbox-tax-' . $tax ] = false;
 
 				if ( $tax !== 'post_format' ) {
@@ -254,13 +247,13 @@ class WPSEO_Option_Titles extends WPSEO_Option {
 
 
 	/**
-	 * Validate the option
+	 * Validate the option.
 	 *
 	 * @param  array $dirty New value for the option.
 	 * @param  array $clean Clean value for the option, normally the defaults.
 	 * @param  array $old   Old value of the option.
 	 *
-	 * @return  array      Validated clean value for the option to be saved to the database
+	 * @return  array      Validated clean value for the option to be saved to the database.
 	 */
 	protected function validate_option( $dirty, $clean, $old ) {
 		foreach ( $clean as $key => $value ) {
@@ -293,14 +286,6 @@ class WPSEO_Option_Titles extends WPSEO_Option {
 				 *  'metadesc-tax-' . $tax->name
 				 */
 				case 'metadesc-':
-					/*
-					 * Covers:
-					 *  'metakey-home-wpseo', 'metakey-author-wpseo'
-					 *  'metakey-' . $pt->name
-					 *  'metakey-ptarchive-' . $pt->name
-					 *  'metakey-tax-' . $tax->name
-					 */
-				case 'metakey-':
 					/*
 					 * Covers:
 					 *  'bctitle-ptarchive-' . $pt->name
@@ -348,12 +333,11 @@ class WPSEO_Option_Titles extends WPSEO_Option {
 
 				/*
 				 * Covers:
-				 *  'noindex-subpages-wpseo', 'noindex-author-wpseo', 'noindex-archive-wpseo'
+				 *  'noindex-author-wpseo', 'noindex-archive-wpseo'
 				 *  'noindex-' . $pt->name
 				 *  'noindex-ptarchive-' . $pt->name
 				 *  'noindex-tax-' . $tax->name
 				 *  'forcerewritetitle':
-				 *  'usemetakeywords':
 				 *  'noodp':
 				 *  'noydir':
 				 *  'disable-author':
@@ -377,16 +361,16 @@ class WPSEO_Option_Titles extends WPSEO_Option {
 
 
 	/**
-	 * Clean a given option value
+	 * Clean a given option value.
 	 *
 	 * @param  array  $option_value          Old (not merged with defaults or filtered) option value to
 	 *                                       clean according to the rules for this option.
-	 * @param  string $current_version       (optional) Version from which to upgrade, if not set,
+	 * @param  string $current_version       Optional. Version from which to upgrade, if not set,
 	 *                                       version specific upgrades will be disregarded.
-	 * @param  array  $all_old_option_values (optional) Only used when importing old options to have
+	 * @param  array  $all_old_option_values Optional. Only used when importing old options to have
 	 *                                       access to the real old values, in contrast to the saved ones.
 	 *
-	 * @return  array            Cleaned option
+	 * @return  array            Cleaned option.
 	 */
 	protected function clean_option( $option_value, $current_version = null, $all_old_option_values = null ) {
 		static $original = null;
@@ -427,7 +411,6 @@ class WPSEO_Option_Titles extends WPSEO_Option {
 				'noindexcat'        => 'noindex-category',
 				'noindextag'        => 'noindex-post_tag',
 				'noindexpostformat' => 'noindex-post_format',
-				'noindexsubpages'   => 'noindex-subpages',
 			);
 			foreach ( $move as $old => $new ) {
 				if ( isset( $old_option[ $old ] ) && ! isset( $option_value[ $new ] ) ) {
@@ -462,9 +445,6 @@ class WPSEO_Option_Titles extends WPSEO_Option {
 			'metadesc-home'    => 'metadesc-home-wpseo',
 			'metadesc-author'  => 'metadesc-author-wpseo',
 			'metadesc-archive' => 'metadesc-archive-wpseo',
-			'metakey-home'     => 'metakey-home-wpseo',
-			'metakey-author'   => 'metakey-author-wpseo',
-			'noindex-subpages' => 'noindex-subpages-wpseo',
 			'noindex-author'   => 'noindex-author-wpseo',
 			'noindex-archive'  => 'noindex-archive-wpseo',
 		);
@@ -482,10 +462,9 @@ class WPSEO_Option_Titles extends WPSEO_Option {
 		 *            and post_types have been registered, i.e. at the end of the init action.}}
 		 */
 		if ( isset( $original ) && current_filter() === 'wpseo_double_clean_titles' || did_action( 'wpseo_double_clean_titles' ) > 0 ) {
-			$rename          = array(
+			$rename = array(
 				'title-'           => 'title-tax-',
 				'metadesc-'        => 'metadesc-tax-',
-				'metakey-'         => 'metakey-tax-',
 				'noindex-'         => 'noindex-tax-',
 				'tax-hideeditbox-' => 'hideeditbox-tax-',
 
@@ -541,7 +520,6 @@ class WPSEO_Option_Titles extends WPSEO_Option {
 					/* text fields */
 					case 'title-':
 					case 'metadesc-':
-					case 'metakey-':
 					case 'bctitle-ptarchive-':
 						$option_value[ $key ] = WPSEO_Utils::sanitize_text_field( $value );
 						break;
@@ -597,9 +575,9 @@ class WPSEO_Option_Titles extends WPSEO_Option {
 			$patterns[] = 'tax-hideeditbox-';
 
 			/**
-			 * Allow altering the array with variable array key patterns
+			 * Allow altering the array with variable array key patterns.
 			 *
-			 * @api  array  $patterns  Array with the variable array key patterns
+			 * @api  array  $patterns  Array with the variable array key patterns.
 			 */
 			$patterns = apply_filters( 'wpseo_option_titles_variable_array_key_patterns', $patterns );
 
