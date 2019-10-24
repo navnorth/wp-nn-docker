@@ -1,12 +1,18 @@
 version: '2'
 
 services:
+   nginx-proxy:
+     image: jwilder/nginx-proxy
+     ports:
+       - "80:80"
+     volumes:
+       - /var/run/docker.sock:/tmp/docker.sock:ro
    db:
      build:
        context: ./docker
        dockerfile: mysql.dockerfile
      volumes:
-       - db_data:/var/lib/mysql
+       - ./data/mysql:/var/lib/mysql
      restart: on-failure
      environment:
        MYSQL_ROOT_PASSWORD: somewordpress
@@ -14,32 +20,30 @@ services:
        MYSQL_USER: wordpress
        MYSQL_PASSWORD: wordpress
 
-   wordpress:
+   wordpress1:
      depends_on:
        - db
      build:
        context: ./docker
        dockerfile: wordpress.dockerfile
      volumes:
+       #- ./wp-config.php:/var/www/html/wp-config.php
        - ./wp-content/plugins:/var/www/html/wp-content/plugins
        - ./wp-content/themes:/var/www/html/wp-content/themes
      ports:
-       - "80:80"
+       - "80"
      restart: on-failure
      environment:
-       WORDPRESS_DB_HOST: db:3306
-       WORDPRESS_DB_USER: wordpress
-       WORDPRESS_DB_PASSWORD: wordpress
-       WORDPRESS_DB_NAME: wordpress
+       VIRTUAL_HOST: wordpress1.local
+       WORDPRESS_DB_HOST: db
+       WORDPRESS_DB_USER: root
+       WORDPRESS_DB_PASSWORD: somewordpress
+       WORDPRESS_DB_NAME: wordpress1
+
    solr:
      image: solr
      ports:
      - "8983:8983"
      volumes:
-     - solr_data:/opt/solr/server/solr/mycores
+     - /opt/solr/server/solr/mycores
      restart: on-failure
-volumes:
-    db_data:
-      driver: local
-    solr_data:
-      driver: local
