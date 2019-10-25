@@ -54,6 +54,12 @@ To test whether this worked, make sure this command finds a host
 
     host> ping oese.localhost.localdomain
 
+## Configure docker-compose.yml
+
+- Configure docker-compose.yml for as many development sites as necessary.
+-- Use the **wordpress1** definition as an example.
+--Be sure to set the **VIRTUAL_HOST** and **WORDPRESS_DB_NAME** environment variables as appropriate.
+--VIRTUAL_HOST controls what URL the container will respond to, and must match what you defined in your hosts file.  WORDPRESS_DB_NAME is used to name the backing DB and must be unique for each site.
 
 ## Start the Docker
 
@@ -64,44 +70,8 @@ Start up the docker from your terminal
 
 If you get this error: 'Bind for 0.0.0.0:80 failed: port is already allocated', refer back to *Step 2* for stopping other dockers.
 
-If no errors, open your web browser:
+If no errors, open your web browser to one of the URLs you defined.  You'll be presented with the standard Wordpress setup.
 
-    http://oii.localhost.localdomain
-    http://oet.localhost.localdomain
-    http://oese.localhost.localdomain
-
-Need to get into the docker and tweak anything?
-
-    host> cd <wp-nn-docker-directory>
-    host> docker-compose exec wordpress bash
-
-Login to WordPress with this admin account
-
-    username: admin
-    password: th!sN0t.H@pp3ning
-
-
-## Maintenance
-
-Occasional tasks to keep things up-to-date
-
-### Refresh to the latest data
-
-    host> cd <wp-nn-docker-directory>
-    host> docker-compose build --no-cache db
-    host> docker-compose up --detach
-    host> docker-compose exec db bash
-    host> mysql -u wordpress -h db -pwordpress wordpress < /docker-entrypoint-initdb.d/current.sql
-
-### Dump the db and save it as current
-
-    host> cd <wp-nn-docker-directory>
-    host> docker-compose exec wordpress bash
-    docker> mysqldump -u wordpress -h db -pwordpress wordpress > wp_db_dump.`date +%Y%m%d`.sql
-    docker> exit
-    host> mv html/wp_db_dump.`date +%Y%m%d`.sql docker/data/
-    host> cd docker/data/
-    host> ln -sf wp_db_dump.`date +%Y%m%d`.sql ./current.sql
 
 
 
