@@ -15,7 +15,7 @@ services:
        dockerfile: mysql.dockerfile
      volumes:
        - /var/lib/mysql
-       - ./data/oese/:/docker-entrypoint-initdb.d
+       - ./data/oese:/docker-entrypoint-initdb.d
      restart: on-failure
      networks:
        - proxynet

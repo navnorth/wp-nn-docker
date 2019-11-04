@@ -3,13 +3,6 @@
 wp-content/themes
 wp-content/plugins/
 
-html/license.txt
-html/readme.html
-html/sitemap.xml
-html/sitemap.xml.gz
-
-data/
-
 # Windows thumbnail cache files
 Thumbs.db
 ehthumbs.db
