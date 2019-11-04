@@ -15,6 +15,7 @@ services:
        dockerfile: mysql.dockerfile
      volumes:
        - /var/lib/mysql
+       - ./data/oese/:/docker-entrypoint-initdb.d
      restart: on-failure
      networks:
        - proxynet
@@ -24,12 +25,12 @@ services:
        MYSQL_USER: wordpress
        MYSQL_PASSWORD: wordpress
 
-   wordpress1:
+   oese:
      depends_on:
        - db
      build:
        context: ./docker
-       dockerfile: wordpress.dockerfile
+       dockerfile: oese.dockerfile
      volumes:
        - /var/www/html
      ports:
@@ -38,12 +39,12 @@ services:
      networks:
        - proxynet
      environment:
-       VIRTUAL_HOST: wordpress1.local
+       VIRTUAL_HOST: oet.localhost.localdomain,oese.localhost.localdomain,oii.localhost.localdomain
        WORDPRESS_DB_HOST: db
        # connecting to db as mysql root allows auto-creation of new db
        WORDPRESS_DB_USER: root
        WORDPRESS_DB_PASSWORD: somewordpress
-       WORDPRESS_DB_NAME: wordpress1
+       WORDPRESS_DB_NAME: oese
 
    solr:
      image: solr
