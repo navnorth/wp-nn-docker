@@ -15,15 +15,11 @@ services:
        dockerfile: mysql.dockerfile
      volumes:
        - /var/lib/mysql
-       - ./data/oese:/docker-entrypoint-initdb.d
      restart: on-failure
      networks:
        - proxynet
      environment:
        MYSQL_ROOT_PASSWORD: somewordpress
-       MYSQL_DATABASE: wordpress
-       MYSQL_USER: wordpress
-       MYSQL_PASSWORD: wordpress
 
    oese:
      depends_on:
@@ -33,19 +29,15 @@ services:
        dockerfile: oese.dockerfile
      volumes:
        - /var/www/html
+       - ./docker/wp-content:/var/www/html/wp-content
      ports:
        - "80"
      restart: on-failure
      networks:
        - proxynet
      environment:
-       VIRTUAL_HOST: oet.localhost.localdomain,oese.localhost.localdomain,oii.localhost.localdomain
-       WORDPRESS_DB_HOST: db
-       # connecting to db as mysql root allows auto-creation of new db
-       WORDPRESS_DB_USER: root
-       WORDPRESS_DB_PASSWORD: somewordpress
-       WORDPRESS_DB_NAME: oese
-
+       VIRTUAL_HOST: localhost.localdomain,oet.localhost.localdomain,oese.localhost.localdomain,oii.localhost.localdomain
+         
    solr:
      image: solr
      ports:

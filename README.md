@@ -57,9 +57,11 @@ To test whether this worked, make sure this command finds a host
 ## Configure docker-compose.yml
 
 - Configure docker-compose.yml for as many development sites as necessary.
--- Use the **wordpress1** definition as an example.
---Be sure to set the **VIRTUAL_HOST** and **WORDPRESS_DB_NAME** environment variables as appropriate.
---VIRTUAL_HOST controls what URL the container will respond to, and must match what you defined in your hosts file.  WORDPRESS_DB_NAME is used to name the backing DB and must be unique for each site.
+--Be sure to set the **VIRTUAL_HOST** and **WORDPRESS_*** environment variables as appropriate.
+---VIRTUAL_HOST controls what URL(s) the container will respond to, and must match what you defined in your hosts file.
+---WORDPRESS_DB_NAME is used to name the backing DB and must be unique for each site.
+- If you have MySQL data to import, place the .sql file in the **data** directory and it will be read on container creation.
+-- When using mysqldump to create the above .sql file, use the **--databases** option to ensure that the CREATE DATABASE command is included in the dump.  The database name must match the appropriate environment variable in docker-compose.
 
 ## Start the Docker
 
@@ -70,8 +72,4 @@ Start up the docker from your terminal
 
 If you get this error: 'Bind for 0.0.0.0:80 failed: port is already allocated', refer back to *Step 2* for stopping other dockers.
 
-If no errors, open your web browser to one of the URLs you defined.  You'll be presented with the standard Wordpress setup.
-
-
-
-
+Wait a couple minutes for all initialization to complete.  Open your web browser to one of the URLs you defined.  You'll be presented with the standard Wordpress setup.
