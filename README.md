@@ -73,3 +73,50 @@ Start up the docker from your terminal
 If you get this error: 'Bind for 0.0.0.0:80 failed: port is already allocated', refer back to *Step 2* for stopping other dockers.
 
 Wait a couple minutes for all initialization to complete.  Open your web browser to one of the URLs you defined.  You'll be presented with the standard Wordpress setup.
+
+If no errors, open your web browser:
+
+    http://oese.localhost.localdomain
+    http://oet.localhost.localdomain
+
+Login to WordPress with this admin account
+
+**username:** `admin`
+**password:** `th!sN0t.H@pp3ning`
+
+Need to get into the docker and tweak anything?
+
+    host> cd <wp-nn-docker-directory>
+    host> docker-compose exec wordpress bash
+
+### WP Solr Pro Plugin
+
+If you need to use WP Solr, you can get the pro plugin from here, assuming you have access rights:
+
+**v20.9:** https://drive.google.com/open?id=1Ly8we78Q_Ff-8FFPRlqxkzLoVNwB7wtK
+**v21.1:** https://drive.google.com/open?id=1LqcSII8ftcfuVxEBJISNROibNeLOwm-E
+
+
+## Maintenance
+
+Occasional tasks to keep things up-to-date
+
+### Refresh to the latest data
+
+    host> cd <wp-nn-docker-directory>
+    host> docker-compose build --no-cache db
+    host> docker-compose up --detach
+    host> docker-compose exec db bash
+    host> mysql -u wordpress -h db -pwordpress wordpress < /docker-entrypoint-initdb.d/current.sql
+
+### Dump the db and save it as current
+
+    host> cd <wp-nn-docker-directory>
+    host> docker-compose exec wordpress bash
+    docker> mysqldump -u wordpress -h db -pwordpress wordpress > wp_db_dump.`date +%Y%m%d`.sql
+    docker> exit
+    host> mv html/wp_db_dump.`date +%Y%m%d`.sql docker/data/
+    host> cd docker/data/
+    host> ln -sf wp_db_dump.`date +%Y%m%d`.sql ./current.sql
+
+
