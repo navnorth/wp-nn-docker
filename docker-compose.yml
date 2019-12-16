@@ -21,12 +21,12 @@ services:
      environment:
        MYSQL_ROOT_PASSWORD: somewordpress
 
-   oese:
+   wordpress:
      depends_on:
        - db
      build:
        context: ./docker
-       dockerfile: oese.dockerfile
+       dockerfile: wordpress.dockerfile
      volumes:
        - /var/www/html
        - ./docker/wp-content:/var/www/html/wp-content
@@ -36,15 +36,7 @@ services:
      networks:
        - proxynet
      environment:
-       VIRTUAL_HOST: localhost.localdomain,oet.localhost.localdomain,oese.localhost.localdomain,oii.localhost.localdomain
-         
-   solr:
-     image: solr
-     ports:
-     - "8983"
-     volumes:
-     - /opt/solr/server/solr/mycores
-     restart: on-failure
+       VIRTUAL_HOST: localhost.localdomain,test.localhost.localdomain
 
 networks:
   proxynet:
