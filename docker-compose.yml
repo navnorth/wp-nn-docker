@@ -1,18 +1,25 @@
 version: '2'
 
 services:
+   nginx-proxy:
+     image: jwilder/nginx-proxy
+     ports:
+       - "80:80"
+     volumes:
+       - /var/run/docker.sock:/tmp/docker.sock:ro
+     networks:
+       - proxynet
    db:
      build:
        context: ./docker
        dockerfile: mysql.dockerfile
      volumes:
-       - db_data:/var/lib/mysql
+       - /var/lib/mysql
      restart: on-failure
+     networks:
+       - proxynet
      environment:
        MYSQL_ROOT_PASSWORD: somewordpress
-       MYSQL_DATABASE: wordpress
-       MYSQL_USER: wordpress
-       MYSQL_PASSWORD: wordpress
 
    wordpress:
      depends_on:
@@ -21,24 +28,16 @@ services:
        context: ./docker
        dockerfile: wordpress.dockerfile
      volumes:
-       - ./html:/var/www/html
+       - /var/www/html
+       - ./docker/wp-content:/var/www/html/wp-content
      ports:
-       - "80:80"
+       - "80"
      restart: on-failure
+     networks:
+       - proxynet
      environment:
-       WORDPRESS_DB_HOST: db:3306
-       WORDPRESS_DB_USER: wordpress
-       WORDPRESS_DB_PASSWORD: wordpress
-       WORDPRESS_DB_NAME: wordpress
-   solr:
-     image: solr
-     ports:
-     - "8983:8983"
-     volumes:
-     - solr_data:/opt/solr/server/solr/mycores
-     restart: on-failure
-volumes:
-    db_data:
-      driver: local
-    solr_data:
-      driver: local
+       VIRTUAL_HOST: localhost.localdomain,test.localhost.localdomain
+
+networks:
+  proxynet:
+    driver: bridge

@@ -54,6 +54,14 @@ To test whether this worked, make sure this command finds a host
 
     host> ping oese.localhost.localdomain
 
+## Configure docker-compose.yml
+
+- Configure docker-compose.yml for as many development sites as necessary.
+--Be sure to set the **VIRTUAL_HOST** and **WORDPRESS_*** environment variables as appropriate.
+---VIRTUAL_HOST controls what URL(s) the container will respond to, and must match what you defined in your hosts file.
+---WORDPRESS_DB_NAME is used to name the backing DB and must be unique for each site.
+- If you have MySQL data to import, place the .sql file in the **data** directory and it will be read on container creation.
+-- When using mysqldump to create the above .sql file, use the **--databases** option to ensure that the CREATE DATABASE command is included in the dump.  The database name must match the appropriate environment variable in docker-compose.
 
 ## Start the Docker
 
@@ -64,21 +72,29 @@ Start up the docker from your terminal
 
 If you get this error: 'Bind for 0.0.0.0:80 failed: port is already allocated', refer back to *Step 2* for stopping other dockers.
 
+Wait a couple minutes for all initialization to complete.  Open your web browser to one of the URLs you defined.  You'll be presented with the standard Wordpress setup.
+
 If no errors, open your web browser:
 
-    http://oii.localhost.localdomain
-    http://oet.localhost.localdomain
     http://oese.localhost.localdomain
+    http://oet.localhost.localdomain
+
+Login to WordPress with this admin account
+
+**username:** `admin`
+**password:** `th!sN0t.H@pp3ning`
 
 Need to get into the docker and tweak anything?
 
     host> cd <wp-nn-docker-directory>
     host> docker-compose exec wordpress bash
 
-Login to WordPress with this admin account
+### WP Solr Pro Plugin
 
-    username: admin
-    password: th!sN0t.H@pp3ning
+If you need to use WP Solr, you can get the pro plugin from here, assuming you have access rights:
+
+**v20.9:** https://drive.google.com/open?id=1Ly8we78Q_Ff-8FFPRlqxkzLoVNwB7wtK
+**v21.1:** https://drive.google.com/open?id=1LqcSII8ftcfuVxEBJISNROibNeLOwm-E
 
 
 ## Maintenance
@@ -102,6 +118,5 @@ Occasional tasks to keep things up-to-date
     host> mv html/wp_db_dump.`date +%Y%m%d`.sql docker/data/
     host> cd docker/data/
     host> ln -sf wp_db_dump.`date +%Y%m%d`.sql ./current.sql
-
 
 
