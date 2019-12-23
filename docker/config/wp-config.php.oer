@@ -32,7 +32,7 @@ define( 'DB_PASSWORD', 'somewordpress' );
 define( 'DB_HOST', 'db' );
 
 /** Database Charset to use in creating database tables. */
-define( 'DB_CHARSET', 'utf8' );
+define( 'DB_CHARSET', 'utf8mb4' );
 
 /** The Database Collate type. Don't change this if in doubt. */
 define( 'DB_COLLATE', '' );
@@ -68,7 +68,7 @@ $table_prefix = 'wp_';
 define('WP_ALLOW_MULTISITE', true);
 define('MULTISITE', true);
 define('SUBDOMAIN_INSTALL', true);
-define('DOMAIN_CURRENT_SITE', 'k12.localhost.localdomain');
+define('DOMAIN_CURRENT_SITE', 'localhost.localdomain');
 define('PATH_CURRENT_SITE', '/');
 define('SITE_ID_CURRENT_SITE', 1);
 define('BLOG_ID_CURRENT_SITE', 1);

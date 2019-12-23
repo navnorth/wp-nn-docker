@@ -50,16 +50,6 @@ services:
      environment:
        VIRTUAL_HOST: localhost.localdomain,oer.localhost.localdomain,k12.localhost.localdomain
        
-   #git:
-     #depends_on:
-       #- oer
-     #build:
-       #context: ./docker
-       #dockerfile: git.dockerfile
-       #command: git -C /temp clone https://github.com/navnorth/wp-oer.git
-     #volumes:
-       #- ./docker/temp/:/var/www/html/wp-content/plugins
-       
    solr:
      image: solr
      ports:
