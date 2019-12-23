@@ -1,0 +1,154 @@
+.lesson_plan_meta_wrapper .lp-module-title {
+    position: relative;
+}
+.lesson_plan_meta_wrapper .lp-remove-module,
+.lesson_plan_meta_wrapper .lp-remove-author,
+.lesson_plan_meta_wrapper .lp-remove-material,
+.lesson_plan_meta_wrapper .lp-remove-source{
+    position: absolute;
+    right: 0;
+    top: -5px;
+    vertical-align: middle;
+    border-radius: 50%;
+    padding: 4px 8px;
+}
+.lesson_plan_meta_wrapper .lp-sortable-handle i {
+    padding-right: 5px;
+    cursor: pointer;
+}
+.lesson_plan_meta_wrapper .ui-sortable-start {
+    height: 37px !important;
+}
+.lesson_plan_meta_wrapper .movable-placeholder {
+    background-color: #cccccc;
+}
+.lesson_plan_meta_wrapper .panel.panel-default.lp-ac-item {
+    position: relative;
+}
+.lesson_plan_meta_wrapper .lp-inner-sortable-handle {
+    position: absolute;
+    right: 80px;
+    top: 15px;
+    cursor: pointer;
+}
+.lesson_plan_meta_wrapper .lp-inner-sortable-handle > i {
+    font-size: 1.2em;
+}
+.lesson_plan_meta_wrapper .lp-oer-person-placeholder {
+    cursor: pointer;
+    max-width: 50px;
+    max-height: 50px;
+}
+.lesson_plan_meta_wrapper .lp-standard-child-element {
+    padding-left: 15px;
+}
+.lesson_plan_meta_wrapper .collapse a,
+.lesson_plan_meta_wrapper .lp-standards-wrapper a {
+    cursor: pointer;
+}
+.lesson_plan_meta_wrapper .lp-notation-description {
+    padding-left: 20px;
+}
+.lesson_plan_meta_wrapper .lp-scl {
+    padding-top: 5px;
+    margin: 0px;
+}
+.lesson_plan_meta_wrapper span.selected-standard-pill {
+    padding: 5px 10px;
+    background: #f1f1f1;
+    height: auto;
+    display: inline-block;
+    border: 1px solid #cdcdcd;
+    border-radius: 20px;
+    margin: 3px 3px 3px 0px;
+}
+.lesson_plan_meta_wrapper span.selected-standard-pill:last-child {
+    margin-bottom: 15px;
+}
+.lesson_plan_meta_wrapper a.remove-ss-pill {
+    padding-left: 6px;
+    line-height: 1.8em;
+}
+.lesson_plan_meta_wrapper .panel-group .panel-heading {
+    border-bottom: 1px solid #ddd;
+}
+.lesson_plan_meta_wrapper .lp-material-element-wrapper .input-group-addon {
+    padding: 1px 10px;
+}
+#lpOerStandardModal #oer-lp-standards-list{
+    max-height: 400px;
+    overflow-y: scroll;
+}
+.oer_lp_grades .form-checkbox { margin-bottom:5px; }
+.oer_lp_grades .form-checkbox input[type=radio] { margin:0; }
+.oer_lp_radio_label { margin-bottom:0; margin-left:5px; }
+.full-width { width:100%; }
+.oer-lp-download-copy-icon {
+    display: inline-block;
+    margin-left: 3px;
+    border: 1px solid #cccccc;
+    width: 40px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 15px auto;
+}
+.oer-lp-select-label {
+    padding: 4px 10px;
+    display: inline-block;
+    border: 1px solid #cccccc;
+}
+.lp-hidden { display:none; }
+.lp-remove-download-copy { cursor:pointer; }
+.lp-selected-section a { word-break:break-all; }
+.lesson-plan-plugin-body {
+    border-left: 1px solid #cdcdcd;
+    border-right: 1px solid #cdcdcd;
+    border-bottom: 1px solid #cdcdcd;
+}
+.lesson-plan-plugin-row {
+    padding: 0 15px;
+    overflow: hidden;
+}
+.lp-loader {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    text-align: center;
+    background: rgba(60,60,60,0.5);
+    display: none;
+    margin-left: -20px;
+    padding-right: 20px;
+}
+.lesson-plan-plugin-row:first-child {
+    padding: 15px 15px 0;
+}
+.lesson-plan-plugin-row .oer-row-left {
+    width: 63%;
+    float: left;
+}
+.lesson-plan-plugin-row .oer-row-right {
+    width: 35%;
+    float: right;
+}
+.js #side-sortables.meta-box-sortables .postbox .toggle-indicator:before {
+    content: "\f343";
+    font-size: 17px;
+    color: #191e23;
+    font-weight: 600;
+}
+.js #side-sortables.meta-box-sortables .postbox.closed .toggle-indicator:before {
+    content: "\f347";
+    font-size: 17px;
+    color: #191e23;
+    font-weight: 600;
+}
+.js #side-sortables.meta-box-sortables .postbox h2.hndle {
+    font-size: 13px;
+    color: #191e23;
+}
+.js #side-sortables.meta-box-sortables .postbox h2.hndle:hover {
+    background-color:rgba(241,241,241,0.5);
+    cursor:pointer;
+}
