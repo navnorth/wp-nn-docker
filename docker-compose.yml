@@ -20,13 +20,25 @@ services:
        - proxynet
      environment:
        MYSQL_ROOT_PASSWORD: somewordpress
-
-   oese:
+       
+   phpmyadmin:
+    depends_on:
+      - db
+    image: phpmyadmin/phpmyadmin
+    restart: always
+    ports:
+      - 8982:80
+    environment:
+      PMA_HOST: db
+      MYSQL_ROOT_PASSWORD: somewordpress
+    networks:
+      - proxynet
+   oer:
      depends_on:
        - db
      build:
        context: ./docker
-       dockerfile: oese.dockerfile
+       dockerfile: oer.dockerfile
      volumes:
        - /var/www/html
        - ./docker/wp-content:/var/www/html/wp-content
@@ -36,8 +48,18 @@ services:
      networks:
        - proxynet
      environment:
-       VIRTUAL_HOST: localhost.localdomain,oet.localhost.localdomain,oese.localhost.localdomain,oii.localhost.localdomain
-         
+       VIRTUAL_HOST: localhost.localdomain,oer.localhost.localdomain,k12.localhost.localdomain
+       
+   #git:
+     #depends_on:
+       #- oer
+     #build:
+       #context: ./docker
+       #dockerfile: git.dockerfile
+       #command: git -C /temp clone https://github.com/navnorth/wp-oer.git
+     #volumes:
+       #- ./docker/temp/:/var/www/html/wp-content/plugins
+       
    solr:
      image: solr
      ports:
@@ -45,7 +67,7 @@ services:
      volumes:
      - /opt/solr/server/solr/mycores
      restart: on-failure
-
+   
 networks:
   proxynet:
     driver: bridge
