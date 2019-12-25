@@ -20,8 +20,13 @@ If you haven't checked out the repo yet, do that first. In this example and the 
 
     host> git clone --recurse-submodules https://github.com/navnorth/wp-nn-docker.git
 
-If you've already cloned the repo, make sure your submodules are in place or things won't work right
+Then clone the following plugin repos (wp-academic-standards, wp-oer, wp-curriculum)
+    host> git clone https://github.com/navnorth/wp-academic-standards.git  docker/wp-content/plugins/wp-academic-standards
+    host> git clone --branch mpa-stage https://github.com/navnorth/wp-oer.git  docker/wp-content/plugins/wp-oer
+    host> git clone --branch mpa-stage https://github.com/navnorth/wp-curriculum.git  docker/wp-content/plugins/wp-curriculum
 
+If you've already cloned the repo, make sure your submodules are in place or things won't work right
+	
     host> cd <wp-nn-docker-directory>
     host> git submodule init && git submodule update
 

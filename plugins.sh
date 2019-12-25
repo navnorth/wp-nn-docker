@@ -1,0 +1,1 @@
+git clone --branch mpa-stage https://github.com/navnorth/wp-oer.git  docker/wp-content/plugins/wp-oer
