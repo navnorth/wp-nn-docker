@@ -1,10 +1,4 @@
 #!/bin/sh
-echo "**********************************"
-echo "Cloning OER Docker Files"
-echo "**********************************"
-git clone --branch oer-joseph https://github.com/navnorth/wp-nn-docker.git
-sleep 2
-
 array=( "docker/wp-content/plugins/wp-academic-standards"
         "docker/wp-content/plugins/wp-oer" 
 		"docker/wp-content/plugins/wp-curriculum" )
