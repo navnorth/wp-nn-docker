@@ -1,7 +1,7 @@
 *.log
 
-wp-content/themes
-wp-content/plugins/
+docker/wp-content/themes
+docker/wp-content/plugins/
 
 # Windows thumbnail cache files
 Thumbs.db

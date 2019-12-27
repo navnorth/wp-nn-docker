@@ -6,31 +6,31 @@ A few steps to run before your initial setup, just to make sure we don't run int
 
 ### Step 0
 
-Get the Docker Desktop app installed if you don't already have it
+###### step 0.1 - Get the Docker Desktop app installed if you don't already have it
 
-**Ubuntu:** `> sudo apt-get update && sudo apt-get install -y docker.io docker-compose`
+	**Ubuntu:** `> sudo apt-get update && sudo apt-get install -y docker.io docker-compose`
 
-**Mac:** https://docs.docker.com/docker-for-mac/install/
+	**Mac:** https://docs.docker.com/docker-for-mac/install/
 
-**Windows 10:** https://docs.docker.com/docker-for-windows/install/
+	**Windows 10:** https://docs.docker.com/docker-for-windows/install/
+
+###### step 0.2 - If using Windows: Install GIT for windows (https://gitforwindows.org/)
+
+	**You can choose to use GIT BASH in running command lines.
+	
+        **or if you prefer to do GIT and BASH in Windows command prompt too, 
+          make sure the following paths are set in your windows environment - system variables 
+
+	      C:\Program Files\Git\cmd
+          C:\Program Files\Git\usr\bin
+           
+          Just change the path above if you installed GIT in a different location.
 
 ### Step 1
 
 If you haven't checked out the repo yet, do that first. In this example and the rest of the readme we refer to the main repo directory on your local machine as <wp-nn-docker-directory>
-
-    host> git clone --recurse-submodules https://github.com/navnorth/wp-nn-docker.git
-
-then clone the three plugins (wp-academic-standards, wp-oer, wp-curriculum).
-    RUN git clone --branch mpa-stage https://github.com/navnorth/wp-oer.git  docker/wp-content/plugins/wp-oer
-    RUN git clone --branch mpa-stage https://github.com/navnorth/wp-oer.git  docker/wp-content/plugins/wp-oer
-    RUN git clone --branch mpa-stage https://github.com/navnorth/wp-oer.git  docker/wp-content/plugins/wp-oer
 	
-If you've already cloned the repo, make sure your submodules are in place or things won't work right
-
-    host> cd <wp-nn-docker-directory>
-    host> git submodule init && git submodule update
-
-If you run into an error that says 'Server does not allow request for unadvertised object', make sure the latest changes are pushed to the submodule repo.
+    host> bash init.sh
 
 ### Step 2
 
@@ -57,7 +57,7 @@ Add localhost.localdomain to /etc/hosts. If this command doesn't work, just appe
 
 To test whether this worked, make sure this command finds a host
 
-    host> ping oese.localhost.localdomain
+    host> ping oer.localhost.localdomain
 
 ## Configure docker-compose.yml
 
@@ -81,8 +81,8 @@ Wait a couple minutes for all initialization to complete.  Open your web browser
 
 If no errors, open your web browser:
 
-    http://oese.localhost.localdomain
-    http://oet.localhost.localdomain
+    http://oer.localhost.localdomain
+    http://k12.localhost.localdomain
 
 Login to WordPress with this admin account
 
@@ -112,7 +112,7 @@ Occasional tasks to keep things up-to-date
     host> docker-compose build --no-cache db
     host> docker-compose up --detach
     host> docker-compose exec db bash
-    host> mysql -u wordpress -h db -pwordpress wordpress < /docker-entrypoint-initdb.d/current.sql
+    host> mysql -u wordpress -h db -pwordpress wordpress < /docker-entrypoint-initdb.d/wpoer.sql
 
 ### Dump the db and save it as current
 
