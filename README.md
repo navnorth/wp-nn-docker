@@ -20,13 +20,13 @@ If you haven't checked out the repo yet, do that first. In this example and the 
 
     host> git clone --recurse-submodules https://github.com/navnorth/wp-nn-docker.git
 
-Then clone the following plugin repos (wp-academic-standards, wp-oer, wp-curriculum)
-    host> git clone https://github.com/navnorth/wp-academic-standards.git  docker/wp-content/plugins/wp-academic-standards
-    host> git clone --branch mpa-stage https://github.com/navnorth/wp-oer.git  docker/wp-content/plugins/wp-oer
-    host> git clone --branch mpa-stage https://github.com/navnorth/wp-curriculum.git  docker/wp-content/plugins/wp-curriculum
-
-If you've already cloned the repo, make sure your submodules are in place or things won't work right
+then clone the three plugins (wp-academic-standards, wp-oer, wp-curriculum).
+    RUN git clone --branch mpa-stage https://github.com/navnorth/wp-oer.git  docker/wp-content/plugins/wp-oer
+    RUN git clone --branch mpa-stage https://github.com/navnorth/wp-oer.git  docker/wp-content/plugins/wp-oer
+    RUN git clone --branch mpa-stage https://github.com/navnorth/wp-oer.git  docker/wp-content/plugins/wp-oer
 	
+If you've already cloned the repo, make sure your submodules are in place or things won't work right
+
     host> cd <wp-nn-docker-directory>
     host> git submodule init && git submodule update
 
@@ -117,11 +117,8 @@ Occasional tasks to keep things up-to-date
 ### Dump the db and save it as current
 
     host> cd <wp-nn-docker-directory>
-    host> docker-compose exec wordpress bash
-    docker> mysqldump -u wordpress -h db -pwordpress wordpress > wp_db_dump.`date +%Y%m%d`.sql
-    docker> exit
-    host> mv html/wp_db_dump.`date +%Y%m%d`.sql docker/data/
+    host> docker exec wp-nn-docker_db_1 /usr/bin/mysqldump -u root --password=somewordpress wpoer > wp_db_dump.sql
+    host> mv wp_db_dump.sql docker/data/
     host> cd docker/data/
-    host> ln -sf wp_db_dump.`date +%Y%m%d`.sql ./current.sql
-
+    host> ln -sf wp_db_dump.sql ./wpoer.sql
 

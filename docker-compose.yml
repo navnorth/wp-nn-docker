@@ -19,6 +19,7 @@ services:
      networks:
        - proxynet
      environment:
+       MYSQL_DATABASE: wpoer
        MYSQL_ROOT_PASSWORD: somewordpress
        
    phpmyadmin:
@@ -49,7 +50,6 @@ services:
        - proxynet
      environment:
        VIRTUAL_HOST: localhost.localdomain,oer.localhost.localdomain,k12.localhost.localdomain
-       
    solr:
      image: solr
      ports:
