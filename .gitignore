@@ -2,6 +2,7 @@
 
 docker/wp-content/themes
 docker/wp-content/plugins/
+docker/data/wp_db_dump.sql
 
 # Windows thumbnail cache files
 Thumbs.db
