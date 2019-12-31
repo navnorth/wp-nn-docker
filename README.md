@@ -82,6 +82,7 @@ If no errors, open your web browser:
 Login to WordPress with this admin account
 
 **username:** `admin`
+
 **password:** `th!sN0t.H@pp3ning`
 
 Need to get into the docker and tweak anything?
@@ -94,6 +95,7 @@ Need to get into the docker and tweak anything?
 If you need to use WP Solr, you can get the pro plugin from here, assuming you have access rights:
 
 **v20.9:** https://drive.google.com/open?id=1Ly8we78Q_Ff-8FFPRlqxkzLoVNwB7wtK
+
 **v21.1:** https://drive.google.com/open?id=1LqcSII8ftcfuVxEBJISNROibNeLOwm-E
 
 
@@ -107,13 +109,13 @@ Occasional tasks to keep things up-to-date
     host> docker-compose build --no-cache db
     host> docker-compose up --detach
     host> docker-compose exec db bash
-    host> mysql -u wordpress -h db -pwordpress wordpress < /docker-entrypoint-initdb.d/current.sql
+    host> mysql -u root -h db -psomewordpress oese < /docker-entrypoint-initdb.d/current.sql
 
 ### Dump the db and save it as current
 
     host> cd <wp-nn-docker-directory>
     host> docker-compose exec wordpress bash
-    docker> mysqldump -u wordpress -h db -pwordpress wordpress > wp_db_dump.`date +%Y%m%d`.sql
+    docker> mysqldump -u root -h db -psomewordpress oese > wp_db_dump.`date +%Y%m%d`.sql
     docker> exit
     host> mv html/wp_db_dump.`date +%Y%m%d`.sql docker/data/
     host> cd docker/data/
