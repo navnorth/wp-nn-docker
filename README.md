@@ -17,19 +17,19 @@ A few steps to run before your initial setup, just to make sure we don't run int
 ###### step 0.2 - If using Windows: Install GIT for windows (https://gitforwindows.org/)
 
 	**You can choose to use GIT BASH in running command lines.
-	
-        **or if you prefer to do GIT and BASH in Windows command prompt too, 
-          make sure the following paths are set in your windows environment - system variables 
+
+        **or if you prefer to do GIT and BASH in Windows command prompt too,
+          make sure the following paths are set in your windows environment - system variables
 
 	      C:\Program Files\Git\cmd
           C:\Program Files\Git\usr\bin
-           
+
           Just change the path above if you installed GIT in a different location.
 
 ### Step 1
 
 If you haven't checked out the repo yet, do that first. In this example and the rest of the readme we refer to the main repo directory on your local machine as <wp-nn-docker-directory>
-	
+
     host> bash init.sh
 
 ### Step 2
@@ -53,7 +53,7 @@ If what you have running on port 80 is another docker, find the Container ID and
 
 Add localhost.localdomain to /etc/hosts. If this command doesn't work, just append the line manually to your /etc/hosts file
 
-    host> sudo sed -i -e '$a\'$'\n''127.0.0.1   localhost.localdomain oet.localhost.localdomain oese.localhost.localdomain oii.localhost.localdomain' /etc/hosts
+    host> sudo sed -i -e '$a\'$'\n''127.0.0.1   localhost.localdomain oer.localhost.localdomain k12.localhost.localdomain' /etc/hosts
 
 To test whether this worked, make sure this command finds a host
 
@@ -112,12 +112,12 @@ Occasional tasks to keep things up-to-date
     host> docker-compose build --no-cache db
     host> docker-compose up --detach
     host> docker-compose exec db bash
-    host> mysql -u wordpress -h db -pwordpress wordpress < /docker-entrypoint-initdb.d/wpoer.sql
+    host> mysql -u root -h db -psomewordpress wpoer < /docker-entrypoint-initdb.d/wpoer.sql
 
 ### Dump the db and save it as current
 
     host> cd <wp-nn-docker-directory>
-    host> docker exec wp-nn-docker_db_1 /usr/bin/mysqldump -u root --password=somewordpress wpoer > wp_db_dump.sql
+    host> docker-compose exec db /usr/bin/mysqldump -u root --password=somewordpress wpoer > wp_db_dump.sql
     host> mv wp_db_dump.sql docker/data/
     host> cd docker/data/
     host> ln -sf wp_db_dump.sql ./wpoer.sql
