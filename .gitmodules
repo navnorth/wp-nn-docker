@@ -1,0 +1,9 @@
+[submodule "docker/wp-content/plugins/wp-oer"]
+	path = docker/wp-content/plugins/wp-oer
+	url = https://github.com/navnorth/wp-oer
+[submodule "docker/wp-content/plugins/wp-curriculum"]
+	path = docker/wp-content/plugins/wp-curriculum
+	url = https://github.com/navnorth/wp-curriculum
+[submodule "docker/wp-content/plugins/wp-academic-standards"]
+	path = docker/wp-content/plugins/wp-academic-standards
+	url = https://github.com/navnorth/wp-academic-standards

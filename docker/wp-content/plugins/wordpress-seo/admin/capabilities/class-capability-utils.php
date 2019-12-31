@@ -1,5 +1,7 @@
 <?php
 /**
+ * WPSEO plugin file.
+ *
  * @package WPSEO\Admin\Capabilities
  */
 
@@ -7,6 +9,7 @@
  * Capability Utils collection.
  */
 class WPSEO_Capability_Utils {
+
 	/**
 	 * Checks if the user has the proper capabilities.
 	 *
@@ -19,7 +22,7 @@ class WPSEO_Capability_Utils {
 			return self::has( $capability );
 		}
 
-		return self::has_any( array( 'wpseo_manage_options', $capability ) );
+		return self::has_any( [ 'wpseo_manage_options', $capability ] );
 	}
 
 	/**
