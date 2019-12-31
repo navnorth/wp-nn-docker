@@ -18,7 +18,7 @@ Get the Docker Desktop app installed if you don't already have it
 
 If you haven't checked out the repo yet, do that first. In this example and the rest of the readme we refer to the main repo directory on your local machine as <wp-nn-docker-directory>
 
-    host> git clone --recurse-submodules https://github.com/navnorth/wp-nn-docker.git
+    host> git clone --recurse-submodules https://github.com/navnorth/wp-nn-docker.git --branch <branch> --single-branch
 
 If you've already cloned the repo, make sure your submodules are in place or things won't work right
 
@@ -52,7 +52,7 @@ Add localhost.localdomain to /etc/hosts. If this command doesn't work, just appe
 
 To test whether this worked, make sure this command finds a host
 
-    host> ping oese.localhost.localdomain
+    host> ping localhost.localdomain
 
 ## Configure docker-compose.yml
 
@@ -76,8 +76,7 @@ Wait a couple minutes for all initialization to complete.  Open your web browser
 
 If no errors, open your web browser:
 
-    http://oese.localhost.localdomain
-    http://oet.localhost.localdomain
+    http://localhost.localdomain
 
 Login to WordPress with this admin account
 
