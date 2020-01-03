@@ -1,7 +1,6 @@
 *.log
 
 docker/data/wp_db_dump.sql
-docker/wp-content/plugins/wp-academic-standards
 docker/wp-content/plugins/wp-curriculum
 docker/wp-content/plugins/wp-oer
 
