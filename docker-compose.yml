@@ -21,7 +21,7 @@ services:
      environment:
        MYSQL_DATABASE: wpoer
        MYSQL_ROOT_PASSWORD: somewordpress
-       
+
    phpmyadmin:
     depends_on:
       - db
@@ -50,14 +50,14 @@ services:
        - proxynet
      environment:
        VIRTUAL_HOST: localhost.localdomain,oer.localhost.localdomain,k12.localhost.localdomain
-   solr:
-     image: solr
-     ports:
-     - "8983"
-     volumes:
-     - /opt/solr/server/solr/mycores
-     restart: on-failure
-   
+#   solr:
+#     image: solr
+#     ports:
+#     - "8983"
+#     volumes:
+#     - /opt/solr/server/solr/mycores
+#     restart: on-failure
+
 networks:
   proxynet:
     driver: bridge
