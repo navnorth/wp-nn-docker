@@ -1,0 +1,48 @@
+version: '2'
+
+services:
+   db:
+     build:
+       image: mysql:5.7
+     volumes:
+       - /var/lib/mysql
+     restart: on-failure
+     networks:
+       - proxynet
+     environment:
+       MYSQL_DATABASE: wpoer
+       MYSQL_ROOT_PASSWORD: somewordpress
+
+   phpmyadmin:
+    depends_on:
+      - db
+    image: phpmyadmin/phpmyadmin
+    restart: always
+    ports:
+      - 8982:80
+    environment:
+      PMA_HOST: db
+      MYSQL_ROOT_PASSWORD: somewordpress
+    networks:
+      - proxynet
+
+   oer:
+     depends_on:
+       - db
+     build:
+       context: ./docker
+       dockerfile: oer.dockerfile
+     volumes:
+       - /var/www/html
+       - ./docker/wp-content:/var/www/html/wp-content
+     ports:
+       - "80"
+     restart: on-failure
+     networks:
+       - proxynet
+     environment:
+       VIRTUAL_HOST: new-oer-test.navnorth.com
+
+networks:
+  proxynet:
+    driver: bridge
