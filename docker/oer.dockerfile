@@ -1,5 +1,5 @@
 # change the below tag to whatever (reasonable) combination of WP and PHP version you need
-FROM wordpress:5.3.0-php7.2
+FROM wordpress:5.4.0-php7.2
 RUN apt-get update
 RUN apt-get install -y nano vim default-mysql-client
 
