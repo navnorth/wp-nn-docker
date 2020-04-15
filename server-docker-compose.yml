@@ -5,6 +5,7 @@ services:
      image: mysql:5.7
      volumes:
        - /var/lib/mysql
+       - ./docker/data:/docker-entrypoint-initdb.d
      restart: on-failure
      environment:
        MYSQL_DATABASE: wpoer
@@ -34,7 +35,7 @@ services:
        - "80"
      restart: on-failure
      environment:
-       VIRTUAL_HOST: new-oer.test.navnorth.com
+       VIRTUAL_HOST: new-oer.test.navnorth.com test.navnorth.com
 
 networks:
   default:
