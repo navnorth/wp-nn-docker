@@ -7,7 +7,7 @@ services:
        - db_data:/var/lib/mysql
      restart: on-failure
      environment:
-       MYSQL_ROOT_PASSWORD: password
+       MYSQL_ROOT_PASSWORD: somewordpress
 
    oese:
      depends_on:
