@@ -6,8 +6,10 @@ services:
      volumes:
        - db_data:/var/lib/mysql
      restart: on-failure
+     environment:
+       MYSQL_ROOT_PASSWORD: password
 
-   oer:
+   oese:
      depends_on:
        - db
      build:
