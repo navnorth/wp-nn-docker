@@ -1,17 +1,17 @@
 version: '2'
 
 services:
-   db:
+   oesedb:
      image: mysql:5.7
      volumes:
-       - db_data:/var/lib/mysql
+       - oese_db_data:/var/lib/mysql
      restart: on-failure
      environment:
        MYSQL_ROOT_PASSWORD: somewordpress
 
    oese:
      depends_on:
-       - db
+       - oesedb
      build:
        context: ./docker
        dockerfile: server-oese.dockerfile
@@ -25,7 +25,7 @@ services:
        VIRTUAL_HOST: oese-test.navigationnorth.com,oese.test.navnorth.com,test.navnorth.com
 
 volumes:
-  db_data:
+  oese_db_data:
     driver: local
 
 networks:
