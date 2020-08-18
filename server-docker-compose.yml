@@ -1,0 +1,32 @@
+version: '2'
+
+services:
+   db:
+     image: mysql:5.7
+     volumes:
+       - db_data:/var/lib/mysql
+     restart: on-failure
+
+   oer:
+     depends_on:
+       - db
+     build:
+       context: ./docker
+       dockerfile: server-oer.dockerfile
+     volumes:
+       - /var/www/html
+       - ./docker/wp-content:/var/www/html/wp-content
+     ports:
+       - "80"
+     restart: on-failure
+     environment:
+       VIRTUAL_HOST: oese-test.navigationnorth.com,oese.test.navnorth.com,test.navnorth.com
+
+volumes:
+  db_data:
+    driver: local
+
+networks:
+  default:
+    external:
+      name: docker_proxynet
