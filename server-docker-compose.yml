@@ -12,7 +12,7 @@ services:
        - db
      build:
        context: ./docker
-       dockerfile: server-oer.dockerfile
+       dockerfile: server-oese.dockerfile
      volumes:
        - /var/www/html
        - ./docker/wp-content:/var/www/html/wp-content
