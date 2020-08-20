@@ -16,3 +16,12 @@
 [submodule "html/wp-content/themes/wp-oese-theme"]
 	path = docker/wp-content/themes/wp-oese-theme
 	url = https://github.com/navnorth/wp-oese-theme.git
+[submodule "docker/wp-content/plugins/wp-usahtmlmap"]
+	path = docker/wp-content/plugins/wp-usahtmlmap
+	url = https://github.com/navnorth/wp-usahtmlmap.git
+[submodule "docker/wp-content/plugins/wpdatatables"]
+	path = docker/wp-content/plugins/wpdatatables
+	url = https://github.com/navnorth/wpdatatables.git
+[submodule "docker/wp-content/plugins/wdt-compare-details"]
+	path = docker/wp-content/plugins/wdt-compare-details
+	url = https://github.com/navnorth/wdt-compare-details.git
