@@ -112,7 +112,7 @@ Occasional tasks to keep things up-to-date
 
     host> cd <wp-nn-docker-directory>
     host> docker-compose exec wordpress bash
-    docker> mysqldump -u root -h db -psomewordpress wordpress > wp_db_dump.`date +%Y%m%d`.sql
+    docker> mysqldump -u root -h db -psomewordpress -B --add-drop-database wordpress > wp_db_dump.`date +%Y%m%d`.sql
     docker> exit
     host> docker cp <container_id>:/var/www/html/wp_db_dump.`date +%Y%m%d`.sql ./docker/data/
     host> cd docker/data/
