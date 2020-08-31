@@ -97,7 +97,8 @@ class Yoast_Social_Facebook {
 			return $matches_full_meta[1];
 		}
 
-		return trim( wp_parse_url( $admin_id, PHP_URL_PATH ), '/' );
+		// @todo Replace with call to wp_parse_url() once minimum requirement has gone up to WP 4.7.
+		return trim( parse_url( $admin_id, PHP_URL_PATH ), '/' );
 	}
 
 	/**

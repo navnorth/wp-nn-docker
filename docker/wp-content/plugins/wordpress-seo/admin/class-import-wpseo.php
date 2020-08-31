@@ -12,16 +12,13 @@ class WPSEO_Import_WPSEO extends WPSEO_Import_External {
 
 	/**
 	 * Import wpSEO settings
-	 *
-	 * @param boolean $replace Boolean replace switch.
 	 */
-	public function __construct( $replace = false ) {
-		parent::__construct( $replace );
+	public function __construct() {
+		parent::__construct();
 
 		$this->import_post_metas();
 		$this->import_taxonomy_metas();
 
-		$this->success = true;
 		$this->set_msg(
 			sprintf(
 				/* translators: 1: link open tag; 2: link close tag. */
@@ -49,11 +46,11 @@ class WPSEO_Import_WPSEO extends WPSEO_Import_External {
 	 * Importing the robot values from WPSEO plugin. These have to be converted to the Yoast format.
 	 */
 	private function import_post_robots() {
-		$query_posts = new WP_Query( 'post_type=any&meta_key=_wpseo_edit_robots&order=ASC&fields=ids&nopaging=true' );
+		$query_posts = new WP_Query( 'post_type=any&meta_key=_wpseo_edit_robots&order=ASC' );
 
 		if ( ! empty( $query_posts->posts ) ) {
-			foreach ( array_values( $query_posts->posts ) as $post_id ) {
-				$this->import_post_robot( $post_id );
+			foreach ( $query_posts->posts as $post ) {
+				$this->import_post_robot( $post->ID );
 			}
 		}
 	}

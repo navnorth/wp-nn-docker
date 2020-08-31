@@ -17,15 +17,12 @@ class WPSEO_Import_AIOSEO extends WPSEO_Import_External {
 
 	/**
 	 * Import All In One SEO settings
-	 *
-	 * @param boolean $replace Boolean replace switch.
 	 */
-	public function __construct( $replace = false ) {
-		parent::__construct( $replace );
+	public function __construct() {
+		parent::__construct();
 
 		$this->aioseo_options = get_option( 'aioseop_options' );
 
-		$this->success = true;
 		$this->import_metas();
 		$this->import_ga();
 	}

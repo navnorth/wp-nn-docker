@@ -112,13 +112,12 @@ class WPSEO_Export {
 	 * Writes the header of the export file.
 	 */
 	private function export_header() {
-		$header = sprintf(
+		$this->write_line( '; ' . sprintf(
 			/* translators: %1$s expands to Yoast SEO, %2$s expands to Yoast.com */
-			esc_html__( 'This is a settings export file for the %1$s plugin by %2$s', 'wordpress-seo' ),
+			__( 'This is a settings export file for the %1$s plugin by %2$s', 'wordpress-seo' ),
 			'Yoast SEO',
 			'Yoast.com'
-		);
-		$this->write_line( '; ' . $header . ' - ' . esc_url( WPSEO_Shortlinker::get( 'https://yoa.st/1yd' ) ) );
+			) . ' - ' . esc_url( WPSEO_Shortlinker::get( 'https://yoa.st/1yd' ) ) );
 		if ( $this->include_taxonomy ) {
 			$this->write_line( '; ' . __( 'This export includes taxonomy metadata', 'wordpress-seo' ) );
 		}
