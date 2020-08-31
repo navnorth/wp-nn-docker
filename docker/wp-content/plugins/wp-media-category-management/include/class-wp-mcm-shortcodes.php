@@ -6,7 +6,7 @@
  * @author    De B.A.A.T. <wp-mcm@de-baat.nl>
  * @license   GPL-3.0+
  * @link      https://www.de-baat.nl/WP_MCM
- * @copyright 2014 - 2019 De B.A.A.T.
+ * @copyright 2014 - 2020 De B.A.A.T.
  */
 
 class WP_MCM_Shortcodes {
@@ -131,7 +131,6 @@ class WP_MCM_Shortcodes {
 		$render_options_output = '';
 		?>
 		<div class="wrap">
-			<?php screen_icon(); ?>
 			<h3><?php echo __('Shortcodes', 'wp-media-category-management'); ?></h3>
 			<?php
 			if (isset($_REQUEST['settings-updated'])) {

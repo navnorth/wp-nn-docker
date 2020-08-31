@@ -91,5 +91,5 @@ div#wp_mcm_table_wrapper {
 }
 /* Fix display attachment-filters */
 .media-frame select.attachment-filters {
-    max-width: 30%;
+    max-width: 90% !important;
 }

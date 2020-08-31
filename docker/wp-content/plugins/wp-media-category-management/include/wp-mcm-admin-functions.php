@@ -6,7 +6,7 @@
  * @author    De B.A.A.T. <wp-mcm@de-baat.nl>
  * @license   GPL-3.0+
  * @link      https://www.de-baat.nl/WP_MCM
- * @copyright 2014 - 2019 De B.A.A.T.
+ * @copyright 2014 - 2020 De B.A.A.T.
  */
 
 
@@ -455,19 +455,33 @@ add_action( 'edit_attachment', 'mcm_set_attachment_category' );
 
 /** Changing categories in the 'grid view' */
 function mcm_ajax_query_attachments() {
+//	mcm_debugMP('msg', __FUNCTION__ . ' Started!' );
 
 	if ( ! current_user_can( 'upload_files' ) ) {
 		wp_send_json_error();
 	}
 
 	$taxonomies = get_object_taxonomies( 'attachment', 'names' );
+//	mcm_debugMP('pr', __FUNCTION__ . ' Continued with taxonomies: ', $taxonomies );
+//	mcm_debugMP('pr', __FUNCTION__ . ' Continued with _REQUEST: ', $_REQUEST );
 
 	$query = isset( $_REQUEST['query'] ) ? (array) $_REQUEST['query'] : array();
 
 	$defaults = array(
-		's', 'order', 'orderby', 'posts_per_page', 'paged', 'post_mime_type',
-		'post_parent', 'post__in', 'post__not_in'
+		's',
+		'order',
+		'orderby',
+		'posts_per_page',
+		'paged',
+		'post_mime_type',
+		'post_parent',
+		'author',
+		'post__in',
+		'post__not_in',
+		'year',
+		'monthnum',
 	);
+
 	$query = array_intersect_key( $query, array_flip( array_merge( $defaults, $taxonomies ) ) );
 
 	$query['post_type'] = 'attachment';
@@ -503,11 +517,65 @@ function mcm_ajax_query_attachments() {
 	}
 
 	$query = apply_filters( 'ajax_query_attachments_args', $query );
+//	mcm_debugMP('pr', __FUNCTION__ . ' Continued with query ARGS: ', $query );
 	$query = new WP_Query( $query );
 
 	$posts = array_map( 'wp_prepare_attachment_for_js', $query->posts );
 	$posts = array_filter( $posts );
+//	mcm_debugMP('msg', __FUNCTION__ . ' Found #query->posts = ' . count($query->posts));
 
 	wp_send_json_success( $posts );
 }
-add_action( 'wp_ajax_query-attachments', 'mcm_ajax_query_attachments', 0 );
+//add_action( 'wp_ajax_query-attachments', 'mcm_ajax_query_attachments', 0 );
+
+
+/**
+ * Changing categories in the 'grid view'
+ * @action ajax_query_attachments_args
+ * @param array $query
+ */
+function mcm_ajax_query_attachments_args( $query = array() ) {
+//	mcm_debugMP('pr', __FUNCTION__ . ' Started with query ARGS: ', $query );
+	// grab original query, the given query has already been filtered by WordPress
+	$taxquery = isset( $_REQUEST['query'] ) ? (array) $_REQUEST['query'] : array();
+
+	$taxonomies = get_object_taxonomies( 'attachment', 'names' );
+//	mcm_debugMP('pr', __FUNCTION__ . ' Continued with taxonomies: ', $taxonomies );
+//	mcm_debugMP('pr', __FUNCTION__ . ' Continued with _REQUEST: ', $_REQUEST );
+
+	$taxquery = array_intersect_key( $taxquery, array_flip( $taxonomies ) );
+
+	// merge our query into the WordPress query
+	$query = array_merge( $query, $taxquery );
+
+	$query['tax_query'] = array( 'relation' => 'AND' );
+
+	foreach ( $taxonomies as $taxonomy ) {
+		if ( isset( $query[$taxonomy] ) ) {
+			// Filter a specific category
+			if ( is_numeric( $query[$taxonomy] ) ) {
+				array_push( $query['tax_query'], array(
+					'taxonomy' => $taxonomy,
+					'field'    => 'id',
+					'terms'    => $query[$taxonomy]
+				));	
+			}
+			// Filter No category
+			if ( $query[$taxonomy] == WP_MCM_OPTION_NO_CAT ) {
+				$all_terms_ids = mcm_get_terms_values('ids');
+				array_push( $query['tax_query'], array(
+					'taxonomy' => $taxonomy,
+					'field'    => 'id',
+					'terms'    => $all_terms_ids,
+					'operator' => 'NOT IN',
+				));	
+			}
+		}
+		unset ( $query[$taxonomy] );
+	}
+//	mcm_debugMP('pr', __FUNCTION__ . ' Continued with query ARGS: ', $query );
+
+	return $query;
+}
+add_filter( 'ajax_query_attachments_args', 'mcm_ajax_query_attachments_args' );
+

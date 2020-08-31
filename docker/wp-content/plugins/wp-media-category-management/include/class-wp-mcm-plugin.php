@@ -6,7 +6,7 @@
  * @author    De B.A.A.T. <wp-mcm@de-baat.nl>
  * @license   GPL-3.0+
  * @link      https://www.de-baat.nl/WP_MCM
- * @copyright 2014 - 2019 De B.A.A.T.
+ * @copyright 2014 - 2020 De B.A.A.T.
  */
 
 /**
@@ -43,6 +43,7 @@ class WP_MCM_Plugin {
 
 	// Some local variables
 	var $page_title, $menu_title, $capability, $menu_slug;
+	private $notices = array();
 
 
 	/**
@@ -67,21 +68,22 @@ class WP_MCM_Plugin {
 		$this->capability = 'edit_theme_options';
 		$this->menu_slug = 'wp-mcm';
 		$this->plugin_icon = 'dashicons-list-view';
-		$this->debugMP('pr',__FUNCTION__ . ' this->menu_slug = ', $this->menu_slug);
+		$this->debugMP('pr',__FUNCTION__ . ' this->menu_slug   = ', $this->menu_slug);
 		$this->debugMP('pr',__FUNCTION__ . ' this->plugin_slug = ', $this->plugin_slug);
 
 		// Load plugin text domain
-		add_action( 'init',						array( $this, 'mcm_init' ) );
-		add_action( 'dmp_addpanel',				array( $this, 'create_DMPPanels') );
+		add_action( 'init',							array( $this, 'mcm_init'                  ) );
+		add_action( 'dmp_addpanel',					array( $this, 'create_DMPPanels'          ) );
 
 		// Add the options page and menu item.
-		add_action( 'admin_menu',				array( $this, 'add_plugin_admin_menu' ) );
-		add_action( 'admin_init',				array( $this, 'mcm_admin_init' ) );
-		add_action( 'admin_init',				array( $this, 'plugin_page_init' ) );
+		add_action( 'admin_menu',					array( $this, 'add_plugin_admin_menu'     ) );
+		add_action( 'admin_init',					array( $this, 'mcm_admin_init'            ) );
+		add_action( 'admin_init',					array( $this, 'plugin_page_init'          ) );
+		add_action( 'wp_ajax_mcm_dismiss_notice',	array( $this, 'mcm_action_dismiss_notice' ) );
 
 		// Load admin style sheet and scripts.
-		add_action( 'admin_enqueue_scripts',	array( $this, 'enqueue_admin_styles' ) );
-		add_action( 'admin_enqueue_scripts',	array( $this, 'mcm_enqueue_media_action' ) );
+		add_action( 'admin_enqueue_scripts',		array( $this, 'enqueue_admin_styles'      ) );
+		add_action( 'admin_enqueue_scripts',		array( $this, 'mcm_enqueue_media_action'  ) );
 
 		// Manage columns for attachments
 		add_filter('manage_taxonomies_for_attachment_columns',	array($this,'mcm_filter_media_taxonomy_columns'), 10, 2);
@@ -126,9 +128,6 @@ class WP_MCM_Plugin {
 		// Configure some settings
 		$this->mcm_register_media_taxonomy();
 
-		$wp_mcm_options = get_option(WP_MCM_OPTIONS_NAME);
-		$this->debugMP('pr', __FUNCTION__ . ' AFTER ' . WP_MCM_BASENAME . '/lang/; wp_mcm_options = ', $wp_mcm_options);
-
 	}
 
 	/**
@@ -149,8 +148,9 @@ class WP_MCM_Plugin {
 		$this->mcm_change_category_update_count_callback();
 
 
-		$wp_mcm_options = get_option(WP_MCM_OPTIONS_NAME);
-		$this->debugMP('pr', __FUNCTION__ . ' AFTER ' . WP_MCM_BASENAME . '/lang/; wp_mcm_options = ', $wp_mcm_options);
+		// Handle notice_status setting displaying a notice
+		$this->mcm_handle_notice_status();
+
 	}
 
 	/**
@@ -163,6 +163,170 @@ class WP_MCM_Plugin {
 	public static function activate( $network_wide ) {
 		// Create a default set of options
 		mcm_init_option_defaults();
+	}
+
+	/**
+	 * Handle the notice message for this plugin.
+	 *
+	 * @since    1.9.5
+	 *
+	 * @param    boolean    $network_wide    True if WPMU superadmin uses "Network Activate" action, false if WPMU is disabled or plugin is activated on an individual blog.
+	 */
+	public function mcm_handle_notice_status( ) {
+		//mcm_update_option( 'wp_mcm_notice_activation_date', time() ); // Reset the wp_mcm_notice_activation_date to now
+		$this->debugMP('pr', __FUNCTION__ . ' wp_mcm_options =', get_option(WP_MCM_OPTIONS_NAME) );
+
+		// Only display a notice when the user has enough credits
+		if ( ! current_user_can( 'install_plugins' ) ) {
+			return;
+		}
+
+		// Check the help_notice_status whether to display a notice
+		if (mcm_get_option_bool('wp_mcm_notice_status') ) {
+
+			// include notice js, only if needed
+			add_action( 'admin_print_scripts', array( $this, 'mcm_admin_inline_js' ), 999 );
+
+			// get current time
+			$current_time = time();
+
+			// get activation date
+			$activation_date = mcm_get_option( 'wp_mcm_notice_activation_date' );
+
+			if ( ( (int) $activation_date === 0 ) || ( empty( $activation_date ))) {
+				$activation_date = $current_time;
+				mcm_update_option( 'wp_mcm_notice_activation_date', $activation_date );
+			}
+
+			if ( (int) $activation_date <= $current_time ) {
+				$this->mcm_add_notice(
+							sprintf( __( "Hey, you've been using <strong>WP Media Category Management</strong> for more than %s since the last update.", 'wp-media-category-management' ), human_time_diff( $activation_date, $current_time ) ) .
+							'<br />' .
+							__( 'Could you please do me a BIG favor and help me out solving some issues regarding filtering when using the media library?', 'wp-media-category-management' ) .
+							'<br />' .
+							sprintf( __( 'Please leave some suggestions at the <a href="%s" target="_blank">support page</a> of this plugin', 'wp-media-category-management' ), 'https://wordpress.org/support/plugin/wp-media-category-management/' ) .
+							' ' .
+							sprintf( __( 'or directly at the <a href="%s" target="_blank">help appreciated</a> topic.', 'wp-media-category-management' ), 'https://wordpress.org/support/topic/help-appreciated/' ) .
+							'<br />' .
+							__( 'Your help is much appreciated!', 'wp-media-category-management' ) .
+							'<br /><br />' . 
+							__( 'Thank you very much!', 'wp-media-category-management' ) .
+							' ~ <strong>Jan de Baat</strong>, ' .
+							sprintf( __( 'author of this <a href="%s" target="_blank">WP MCM</a> plugin.', 'wp-media-category-management' ), 'https://de-baat.nl/wp_mcm/' ) .
+							'<br /><br />' . 
+							sprintf( __( '<a href="%s" class="mcm-dismissible-notice" target="_blank" rel="noopener">Ok, I may leave some advice</a><br /><a href="javascript:void(0);" class="mcm-dismissible-notice mcm-delay-notice" rel="noopener">Nope, maybe later</a><br /><a href="javascript:void(0);" class="mcm-dismissible-notice" rel="noopener">I already did</a>', 'wp-media-category-management' ), 'https://wordpress.org/support/plugin/wp-media-category-management/' ),
+							'notice notice-warning is-dismissible mcm-notice' );
+			}
+			
+		}
+
+	}
+
+	/**
+	 * Dismiss notice.
+	 *
+	 * @return void
+	 */
+	public function mcm_action_dismiss_notice() {
+		if ( ! current_user_can( 'install_plugins' ) ) {
+			return;
+		}
+
+		if ( wp_verify_nonce( esc_attr( $_REQUEST['nonce'] ), 'mcm_dismiss_notice' ) ) {
+
+			$notice_action = empty( $_REQUEST['notice_action'] ) || $_REQUEST['notice_action'] === 'hide' ? 'hide' : esc_attr( $_REQUEST['notice_action'] );
+
+			switch ( $notice_action ) {
+				// delay notice
+				case 'delay':
+					// set delay period to WP_MCM_NOTICE_DELAY_PERIOD from now
+					mcm_update_option( 'wp_mcm_notice_activation_date', time() + WP_MCM_NOTICE_DELAY_PERIOD );
+					break;
+
+				// hide notice
+				default:
+					mcm_update_option( 'wp_mcm_notice_status',         '0' );
+					//mcm_update_option( 'wp_mcm_notice_activation_date', time() );
+			}
+		}
+
+		exit;
+	}
+
+	/**
+	 * Add admin notices.
+	 *
+	 * @param string $html Notice HTML
+	 * @param string $status Notice status
+	 * @param bool $paragraph Whether to use paragraph
+	 * @param bool $network
+	 * @return void
+	 */
+	public function mcm_add_notice( $html = '', $status = 'error', $paragraph = true, $network = false ) {
+		$this->notices[] = array(
+			'html' 		=> $html,
+			'status' 	=> $status,
+			'paragraph' => $paragraph
+		);
+
+		add_action( 'admin_notices', array( $this, 'mcm_display_notice') );
+
+		if ( $network ) {
+			add_action( 'network_admin_notices', array( $this, 'mcm_display_notice') );
+		}
+	}
+
+	/**
+	 * Print admin notices.
+	 *
+	 * @return void
+	 */
+	public function mcm_display_notice() {
+		foreach( $this->notices as $notice ) {
+			echo '
+			<div class="' . $notice['status'] . '">
+				' . ( $notice['paragraph'] ? '<p>' : '' ) . '
+				' . $notice['html'] . '
+				' . ( $notice['paragraph'] ? '</p>' : '' ) . '
+			</div>';
+		}
+	}
+
+	/**
+	 * Print admin scripts.
+	 *
+	 * @return void
+	 */
+	public function mcm_admin_inline_js() {
+		if ( ! current_user_can( 'install_plugins' ) ) {
+			return;
+		}
+
+		?>
+		<script type="text/javascript">
+			( function ( $ ) {
+				$( document ).ready( function () {
+					// save dismiss state
+					$( '.mcm-notice.is-dismissible' ).on( 'click', '.notice-dismiss, .mcm-dismissible-notice', function ( e ) {
+						var notice_action = 'hide';
+						
+						if ( $( e.currentTarget ).hasClass( 'mcm-delay-notice' ) ) {
+							notice_action = 'delay'
+						}
+						
+						$.post( ajaxurl, {
+							action: 'mcm_dismiss_notice',
+							notice_action: notice_action,
+							url: '<?php echo admin_url( 'admin-ajax.php' ); ?>',
+							nonce: '<?php echo wp_create_nonce( 'mcm_dismiss_notice' ); ?>'
+						} );
+
+						$( e.delegateTarget ).slideUp( 'fast' );
+					} );
+				} );
+			} )( jQuery );
+		</script>
+		<?php
 	}
 
 	/**
@@ -525,12 +689,12 @@ class WP_MCM_Plugin {
 	/** Filter the columns shown depending on taxonomy choosen */
 	function mcm_attachment_fields_to_edit( $form_fields, $post ) {
 
-		$this->debugMP('pr',__FUNCTION__ . ' form_fields = ', $form_fields);
-		$this->debugMP('pr',__FUNCTION__ . ' post = ', $post);
+		//$this->debugMP('pr',__FUNCTION__ . ' form_fields = ', $form_fields);
+		//$this->debugMP('pr',__FUNCTION__ . ' post = ', $post);
 //		return $form_fields;
 
 		if( 'attachment' !== $post->post_type ) {
-			$this->debugMP('msg',__FUNCTION__ . ' returns form_fields because post_type != attachment but = ' . $post->post_type );
+			//$this->debugMP('msg',__FUNCTION__ . ' returns form_fields because post_type != attachment but = ' . $post->post_type );
 			return $form_fields;
 		}
 
@@ -726,47 +890,71 @@ class WP_MCM_Plugin {
 		global $pagenow;
 		$this->debugMP('msg',__FUNCTION__ . ' pagenow = ' . $pagenow . ', wp_script_is( media-editor ) = ' . wp_script_is( 'media-editor' ));
 
+		// Get media taxonomy
+		$media_taxonomy = mcm_get_media_taxonomy();
+		$this->debugMP('msg',__FUNCTION__ . ' taxonomy = ' . $media_taxonomy);
+
+		// Only show_count when no Post or Tag taxonomy
+		if (( $media_taxonomy == WP_MCM_POST_TAXONOMY ) || ( $media_taxonomy == WP_MCM_TAGS_TAXONOMY )) {
+			$show_count = false;
+		} else {
+			$show_count = true;
+		}
+		$dropdown_options = array(
+			'taxonomy'        => $media_taxonomy,
+			'hide_empty'      => false,
+			'hierarchical'    => true,
+			'orderby'         => 'name',
+			'show_count'      => $show_count,
+			'walker'          => new mcm_walker_category_mediagridfilter(),
+			'value'           => 'id',
+			'echo'            => false
+		);
+		$attachment_terms_list   = wp_dropdown_categories( $dropdown_options );
+		$attachment_terms_string = preg_replace( array( "/<select([^>]*)>/", "/<\/select>/" ), "", $attachment_terms_list );
+
+		// Add an attachment_terms_list for No category
+		$mcm_label      = mcm_get_media_category_label($media_taxonomy);
+		$mcm_label_all  = __( 'Show all', 'wp-media-category-management' ) . ' ' . $mcm_label;
+		$mcm_label_none = __( 'No',       'wp-media-category-management' ) . ' ' . $mcm_label;
+		$no_category_term = ' ,{"term_id":"' . WP_MCM_OPTION_NO_CAT . '","term_name":"' . $mcm_label_none . '"}';
+		$attachment_terms_string = $no_category_term . substr( $attachment_terms_string, 1 );
+		$this->debugMP('msg',__FUNCTION__ . ' attachment_terms_string = !' . $attachment_terms_string . '!');
+		$this->debugMP('pr',__FUNCTION__ . ' attachment_terms_list = !', $attachment_terms_list );
+
 		// Enqueue the media scripts always, not only on post pages.
 		//if ( wp_script_is( 'media-editor' ) && (('upload.php' == $pagenow ) || ('post.php' == $pagenow ) || ('post-new.php' == $pagenow ) )) {
-		if (true) {
+		//if (true) {
+		if ( ( ('post.php' == $pagenow ) || ('post-new.php' == $pagenow ) )  && (mcm_get_option_bool('wp_mcm_use_gutenberg_filter')) ) {
 
+//			$attachment_terms_list = wp_dropdown_categories( $dropdown_options );
+//			$attachment_terms_list = get_terms( $media_taxonomy, array( 'hide_empty' => false ) );
+			$attachment_terms_list = get_terms( $media_taxonomy, $dropdown_options );
+			$this->debugMP('pr',__FUNCTION__ . ' attachment_terms_list = !', $attachment_terms_list );
 
-			// Get media taxonomy
-			$media_taxonomy = mcm_get_media_taxonomy();
-			$this->debugMP('msg',__FUNCTION__ . ' taxonomy = ' . $media_taxonomy);
-
-			// Only show_count when no Post or Tag taxonomy
-			if (( $media_taxonomy == WP_MCM_POST_TAXONOMY ) || ( $media_taxonomy == WP_MCM_TAGS_TAXONOMY )) {
-				$show_count = false;
-			} else {
-				$show_count = true;
-			}
-			$dropdown_options = array(
-				'taxonomy'        => $media_taxonomy,
-				'hide_empty'      => false,
-				'hierarchical'    => true,
-				'orderby'         => 'name',
-				'show_count'      => $show_count,
-				'walker'          => new mcm_walker_category_mediagridfilter(),
-				'value'           => 'id',
-				'echo'            => false
+			wp_enqueue_script( 'mcm-media-views', WP_MCM_URL . '/js/wp-mcm-media-views-post.js', array( 'media-views' ), WP_MCM_VERSION, false );
+			//wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/wp-media-category-admin.js', array( 'jquery' ), $this->version, false );
+			wp_localize_script(
+				'mcm-media-views',
+				'wpmcm_admin_js',
+				array(
+					'ajax_url'       => admin_url( 'admin-ajax.php' ),
+					'spinner_url'    => includes_url() . '/images/spinner.gif',
+					'mcm_taxonomy'   => $media_taxonomy,
+					'mcm_label'      => $mcm_label,
+					'mcm_label_all'  => $mcm_label_all,
+					'mcm_label_none' => $mcm_label_none,
+					'mcm_terms'      => $attachment_terms_list,
+				)
 			);
-			$attachment_terms = wp_dropdown_categories( $dropdown_options );
-			$attachment_terms = preg_replace( array( "/<select([^>]*)>/", "/<\/select>/" ), "", $attachment_terms );
 
-			// Add an attachment_terms for No category
-			$mcm_label     = mcm_get_media_category_label($media_taxonomy);
-			$mcm_label_all = __( 'View all', 'wp-media-category-management' ) . ' ' . $mcm_label;
-			$mcm_label_no  = __( 'No',       'wp-media-category-management' ) . ' ' . $mcm_label;
-			$no_category_term = ' ,{"term_id":"' . WP_MCM_OPTION_NO_CAT . '","term_name":"' . $mcm_label_no . '"}';
-			$attachment_terms = $no_category_term . substr( $attachment_terms, 1 );
-			$this->debugMP('msg',__FUNCTION__ . ' attachment_terms = !' . $attachment_terms . '!');
+		} else {
 
 			echo '<script type="text/javascript">';
 			echo '/* <![CDATA[ */';
 			echo 'var mcm_taxonomies = {"' . $media_taxonomy . '":';
 			echo     '{"list_title":"' . html_entity_decode( $mcm_label_all, ENT_QUOTES, 'UTF-8' ) . '",';
-			echo       '"term_list":[' . substr( $attachment_terms, 2 ) . ']}};';
+			echo       '"term_list":[' . substr( $attachment_terms_string, 2 ) . ']}};';
 			echo '/* ]]> */';
 			echo '</script>';
 
@@ -783,7 +971,7 @@ class WP_MCM_Plugin {
 	 */
 	public function enqueue_admin_styles() {
 
-		wp_enqueue_style( $this->plugin_slug .'-admin-styles', WP_MCM_URL . '/css/admin.css', array(), WP_MCM_VERSION );
+		wp_enqueue_style( $this->plugin_slug .'-admin-styles', WP_MCM_URL . '/css/admin.css', array(), WP_MCM_VERSION . '.1' );
 
 	}
 
@@ -998,6 +1186,35 @@ class WP_MCM_Plugin {
 //			array( 'label_for' => 'wp_mcm_default_custom_media_category', 'field' => 'wp_mcm_default_custom_media_category' )
 //		);
 
+		add_settings_field(
+			'wp_mcm_use_gutenberg_filter',
+			__('Use Gutenberg Filter', 'wp-media-category-management'),
+			array( $this, 'create_wp_mcm_checkbox_field' ),
+			'wp-mcm-setting-admin',
+			'wp_mcm_section_id',
+			array(	'field' => 'wp_mcm_use_gutenberg_filter',
+					'description' => __(' Use the media filter on Gutenberg blocks for posts and pages?', 'wp-media-category-management'),
+				)
+		);
+
+		// Get additional information on when to display the notice_status
+		$notice_date_time    = mcm_get_option( 'wp_mcm_notice_activation_date' ) - time();
+		$notice_date_message = '';
+		if ( $notice_date_time > 0 ) {
+			$notice_date_message = sprintf(' in %s', human_time_diff( mcm_get_option( 'wp_mcm_notice_activation_date' ), time() ) );
+		}
+
+		add_settings_field(
+			'wp_mcm_notice_status',
+			__('Show Notice', 'wp-media-category-management'), 
+			array( $this, 'create_wp_mcm_checkbox_field' ), 
+			'wp-mcm-setting-admin',
+			'wp_mcm_section_id',
+			array(	'field' => 'wp_mcm_notice_status',
+					'description' => sprintf(__(' Show the notice message (again)%s?', 'wp-media-category-management'), $notice_date_message ),
+				)
+		);
+
 	}
 
 	function check_wp_mcm_option_checkbox($input = array(), $key = '') {
@@ -1015,7 +1232,9 @@ class WP_MCM_Plugin {
 
 	function check_wp_mcm_option($input) {
 
+		// Get the current option values first
 		$newinput = array();
+		$newinput = get_option(WP_MCM_OPTIONS_NAME);
 
 		// Always set the current version
 		$newinput['wp_mcm_version'] = WP_MCM_VERSION;
@@ -1047,7 +1266,18 @@ class WP_MCM_Plugin {
 		} else {
 			$newinput['wp_mcm_default_media_category'] = sanitize_key(trim($input['wp_mcm_default_media_category']));
 		}
-//		$newinput['wp_mcm_default_post_category']  = sanitize_key(trim($input['wp_mcm_default_post_category']));
+
+		// Check value of wp_mcm_use_gutenberg_filter
+		$newinput['wp_mcm_use_gutenberg_filter'] = $this->check_wp_mcm_option_checkbox($input,'wp_mcm_use_gutenberg_filter');
+
+		// Check value of wp_mcm_notice_status
+		$newinput['wp_mcm_notice_status'] = $this->check_wp_mcm_option_checkbox($input,'wp_mcm_notice_status');
+		if ( isset( $input['wp_mcm_notice_activation_date'] ) ) {
+			$newinput['wp_mcm_notice_activation_date'] = trim($input['wp_mcm_notice_activation_date']);
+		}
+
+		// Check values without a setting on the Settings page
+//		$newinput['wp_mcm_default_post_category']         = sanitize_key(trim($input['wp_mcm_default_post_category']));
 //		$newinput['wp_mcm_default_custom_media_category'] = sanitize_key(trim($input['wp_mcm_default_custom_media_category']));
 
 		$newinput['wp_mcm_debug'] = 'OPTION wp_mcm_media_taxonomy_to_use: ' . mcm_get_option('wp_mcm_media_taxonomy_to_use')
@@ -1250,6 +1480,14 @@ class WP_MCM_Plugin {
 	function debugMP($type='msg', $header='Debug WP Media Category Management',$message='',$file=null,$line=null,$notime=true) {
 
 		$panel='wp-mcm';
+		// switch (strtolower($type)) {
+			// case 'pr':
+				// error_log('HDR: ' . $header . ' PR is no MSG: ' . print_r($message, true));
+				// break;
+			// default:
+				// error_log('HDR: ' . $header . ' MSG: ' . $message);
+				// break;
+		// }
 
 		// Panel not setup yet?  Return and do nothing.
 		//

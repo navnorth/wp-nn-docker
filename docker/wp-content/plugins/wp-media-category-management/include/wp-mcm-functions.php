@@ -6,7 +6,7 @@
  * @author    De B.A.A.T. <wp-mcm@de-baat.nl>
  * @license   GPL-3.0+
  * @link      https://www.de-baat.nl/WP_MCM
- * @copyright 2014 - 2019 De B.A.A.T.
+ * @copyright 2014 - 2020 De B.A.A.T.
  */
 
 
@@ -25,6 +25,9 @@ function mcm_init_option_defaults() {
 		$wp_mcm_options['wp_mcm_use_default_category']			= '';
 		$wp_mcm_options['wp_mcm_default_media_category']		= WP_MCM_OPTION_NONE;
 		$wp_mcm_options['wp_mcm_default_post_category']			= '';
+		$wp_mcm_options['wp_mcm_use_gutenberg_filter']			= '1';
+		$wp_mcm_options['wp_mcm_notice_status']					= '1';
+		$wp_mcm_options['wp_mcm_notice_activation_date']		= time();
 	} else {
 		// Compare previous version to migrate the options
 		$version_on_start = mcm_get_option('wp_mcm_version');
@@ -47,6 +50,13 @@ function mcm_init_option_defaults() {
 		if ( version_compare($version_on_start,'1.9.1','<') ) {
 			$wp_mcm_options['wp_mcm_category_base']	= WP_MCM_MEDIA_TAXONOMY;
 		}
+		if ( version_compare($version_on_start,'1.9.5','<') ) {
+			$wp_mcm_options['wp_mcm_notice_status']          = '1';
+			$wp_mcm_options['wp_mcm_notice_activation_date'] = time();
+		}
+		if ( version_compare($version_on_start,'1.9.6','<') ) {
+			$wp_mcm_options['wp_mcm_use_gutenberg_filter']   = '1';
+		}
 	}
 
 	// Always set the current version
@@ -61,6 +71,8 @@ function mcm_get_option($option_key = '') {
 }
 
 function mcm_update_option($option_key = '', $option_value = '') {
+//		mcm_error_log(  __FUNCTION__ . ' DEBUG option_key = ' . $option_key . ', option_value = ' . $option_value );
+
 	$wp_mcm_options = get_option(WP_MCM_OPTIONS_NAME);
 	if ( isset( $wp_mcm_options[$option_key] ) ) {
 		$wp_mcm_options[$option_key] = $option_value;
@@ -551,6 +563,20 @@ function mcm_get_media_category_options( $media_taxonomy = '', $selected_value =
 	}
 	mcm_debugMP('pr',__FUNCTION__ . ' selected_value = ' . $selected_value . ', dropdown_options', array_merge($dropdown_options, $dropdown_options_extra));
 	return array_merge($dropdown_options, $dropdown_options_extra);
+}
+
+/**
+ * Prints a message to the debug file that can easily be called by any subclass.
+ *
+ * @param mixed $message      an object, array, string, number, or other data to write to the debug log
+ * @param bool  $shouldNotDie whether or not the The function should exit after writing to the log
+ *
+ */
+function mcm_error_log($message, $shouldNotDie = false) {
+    error_log(print_r($message, true));
+    if ($shouldNotDie) {
+        exit;
+    }
 }
 
 /**

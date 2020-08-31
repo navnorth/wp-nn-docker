@@ -46,13 +46,13 @@ window.wp = window.wp || {};
 			
 			curAttachmentsBrowser.prototype.createToolbar.apply(this,arguments);
 
-			var that = this,				
+			var that = this,
 			i = 1;
-			
+
 			$.each(mcm_taxonomies, function(taxonomy, values) 
 			{
 				if ( values.term_list && filters )
-				{				
+				{
 					that.toolbar.set( taxonomy+'-filter', new media.view.AttachmentFilters.Taxonomy({
 						controller: that.controller,
 						model: that.collection.props,

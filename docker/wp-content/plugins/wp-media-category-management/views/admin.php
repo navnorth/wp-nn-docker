@@ -17,7 +17,6 @@
 ?>
 <div class="wrap">
 
-	<?php screen_icon(); ?>
 	<h2><?php echo __('Welcome to WP Media Category Management', 'wp-media-category-management'); ?></h2>
 
 	<form method="post" action="options.php">

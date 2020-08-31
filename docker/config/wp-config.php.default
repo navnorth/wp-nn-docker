@@ -46,14 +46,14 @@ define('DB_COLLATE', '');
  *
  * @since 2.6.0
  */
-define('AUTH_KEY',         '69d6bf9eb6dc450a0c4f8fe7ba6105225a7556be');
-define('SECURE_AUTH_KEY',  '615c12bfb0f0b40181760b9e713dcc716d8b044e');
-define('LOGGED_IN_KEY',    'ebd94378bd791616dc14c5eae0dc18f68e7aaa86');
-define('NONCE_KEY',        'b8277823a3da6cce5370835a56bd94a2b9887747');
-define('AUTH_SALT',        '30859ff2f3d196770a25de697656af67dae2b34c');
-define('SECURE_AUTH_SALT', 'ae5b20727861c6606be9a063c6080072d13b8283');
-define('LOGGED_IN_SALT',   '1355c9f8b65f07cc8650e9969f3284024af90de8');
-define('NONCE_SALT',       'a2c49a336e3ce37e5f18681a0695565ccdecf20e');
+define('AUTH_KEY',         '');
+define('SECURE_AUTH_KEY',  '');
+define('LOGGED_IN_KEY',    '');
+define('NONCE_KEY',        '');
+define('AUTH_SALT',        '');
+define('SECURE_AUTH_SALT', '');
+define('LOGGED_IN_SALT',   '');
+define('NONCE_SALT',       '');
 
 /**#@-*/
 
@@ -65,6 +65,7 @@ define('NONCE_SALT',       'a2c49a336e3ce37e5f18681a0695565ccdecf20e');
  */
 $table_prefix  = 'wordp_';
 
+/* if you want MultiSite, re-enable these
 define('WP_ALLOW_MULTISITE', true);
 define('MULTISITE', true);
 define('SUBDOMAIN_INSTALL', true);
@@ -72,6 +73,7 @@ define('DOMAIN_CURRENT_SITE', 'localhost.localdomain');
 define('PATH_CURRENT_SITE', '/');
 define('SITE_ID_CURRENT_SITE', 1);
 define('BLOG_ID_CURRENT_SITE', 1);
+*/
 
 /**
  * For developers: WordPress debugging mode.

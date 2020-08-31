@@ -2,9 +2,9 @@
 Contributors: DeBAAT
 Donate link: https://www.de-baat.nl/WP_MCM
 Tags: media library, bulk action, bulk toggle, toggle category, taxonomy, taxonomies, attachment, media category, media categories, media tag, media tags, media taxonomy, media taxonomies, media filter, media organizer, media types, media uploader, custom, media management, attachment management, files management, user experience, wp-admin, admin
-Requires at least: 4.0
-Tested up to: 5.1.1
-Stable tag: 1.9.4
+Requires at least: 5.0
+Tested up to: 5.4.1
+Stable tag: 1.9.7
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -87,6 +87,19 @@ Use the `[wp_mcm]` shortcode. Various shortcode uses are explained in the **WP M
 10. The post page showing the results of the example using the [wp-mcm category="mediafoto,medialogo"] shortcode.
 
 == Changelog ==
+
+= 1.9.7 =
+* Tested for WP 5.4.1.
+* Added option to disable filter for media with Gutenberg blocks
+
+= 1.9.6 =
+* Tested for WP 5.4.0.
+* Added support for adding media with Gutenberg blocks
+
+= 1.9.5 =
+* Tested for WP 5.3.2.
+* Fixed deprecated use of screen_icon()
+* Implemented notice function to ask for help
 
 = 1.9.4 =
 * Tested for WP 5.1.1.
