@@ -1,5 +1,7 @@
 <?php
 /**
+ * WPSEO plugin file.
+ *
  * @package WPSEO\Inc
  */
 
@@ -16,21 +18,18 @@ class WPSEO_Post_Type {
 	 * @return array Array with all the accessible post_types.
 	 */
 	public static function get_accessible_post_types() {
-		$post_types = get_post_types( array( 'public' => true ) );
+		return YoastSEO()->helpers->post_type->get_accessible_post_types();
+	}
 
-		/**
-		 * Filter: 'wpseo_accessible_post_types' - Allow changing the accessible post types.
-		 *
-		 * @api array $post_types The public post types.
-		 */
-		$post_types = apply_filters( 'wpseo_accessible_post_types', $post_types );
-
-		// When the array gets messed up somewhere.
-		if ( ! is_array( $post_types ) ) {
-			return array();
-		}
-
-		return $post_types;
+	/**
+	 * Returns whether the passed post type is considered accessible.
+	 *
+	 * @param string $post_type The post type to check.
+	 *
+	 * @return bool Whether or not the post type is considered accessible.
+	 */
+	public static function is_post_type_accessible( $post_type ) {
+		return in_array( $post_type, self::get_accessible_post_types(), true );
 	}
 
 	/**
@@ -41,13 +40,7 @@ class WPSEO_Post_Type {
 	 * @return bool True when post type is set to index.
 	 */
 	public static function is_post_type_indexable( $post_type_name ) {
-		$option = WPSEO_Options::get_option( 'wpseo_titles' );
-
-		if ( ! array_key_exists( 'noindex-' . $post_type_name, $option ) ) {
-			return false;
-		}
-
-		return empty( $option[ 'noindex-' . $post_type_name ] );
+		return YoastSEO()->helpers->post_type->is_indexable( $post_type_name );
 	}
 
 	/**
@@ -61,5 +54,48 @@ class WPSEO_Post_Type {
 		unset( $post_types['attachment'] );
 
 		return $post_types;
+	}
+
+	/**
+	 * Checks if the post type is enabled in the REST API.
+	 *
+	 * @param string $post_type The post type to check.
+	 *
+	 * @return bool Whether or not the post type is available in the REST API.
+	 */
+	public static function is_rest_enabled( $post_type ) {
+		$post_type_object = get_post_type_object( $post_type );
+
+		if ( $post_type_object === null ) {
+			return false;
+		}
+
+		return $post_type_object->show_in_rest === true;
+	}
+
+	/**
+	 * Checks if the current post type has an archive.
+	 *
+	 * Context: The has_archive value can be a string or a boolean. In most case it will be a boolean,
+	 * but it can be defined as a string. When it is a string the archive_slug will be overwritten to
+	 * define another endpoint.
+	 *
+	 * @param WP_Post_Type $post_type The post type object.
+	 *
+	 * @return bool True whether the post type has an archive.
+	 */
+	public static function has_archive( $post_type ) {
+		return YoastSEO()->helpers->post_type->has_archive( $post_type );
+	}
+
+	/**
+	 * Checks if the Yoast Metabox has been enabled for the post type.
+	 *
+	 * @param string $post_type The post type name.
+	 *
+	 * @return bool True whether the metabox is enabled.
+	 */
+	public static function has_metabox_enabled( $post_type ) {
+		return WPSEO_Options::get( 'display-metabox-pt-' . $post_type, false );
 	}
 }
