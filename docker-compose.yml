@@ -3,6 +3,9 @@ version: '2'
 services:
    nginx-proxy:
      image: jwilder/nginx-proxy
+     build:
+       context: ./docker
+       dockerfile: proxy.dockerfile
      ports:
        - "80:80"
      volumes:
