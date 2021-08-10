@@ -18,12 +18,11 @@ services:
      volumes:
        - /var/www/html
        - ./docker/wp-content:/var/www/html/wp-content
-       - ./docker/config/php_ovrd.ini:/usr/local/etc/php/conf.d/php_ovrd.ini
      ports:
        - "80"
      restart: on-failure
      environment:
-       VIRTUAL_HOST: oese-test.navigationnorth.com,oese.test.navnorth.com,test.navnorth.com
+       VIRTUAL_HOST: oese-test.navigationnorth.com,oese.test.navnorth.com,test.navnorth.com,oet-test.navigationnorth.com
 
 volumes:
   oese_db_data:
