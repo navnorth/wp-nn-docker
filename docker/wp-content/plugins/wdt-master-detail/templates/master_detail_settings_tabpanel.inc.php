@@ -3,17 +3,16 @@
     <!-- .row -->
     <div class="row">
         <!-- Master-detail checkbox-->
-        <div class="col-sm-4 m-b-20 wdt-md-toggle-master-detail-block">
-            <h4 class="c-black m-b-20">
+        <div class="col-sm-4 m-b-16 wdt-md-toggle-master-detail-block">
+            <h4 class="c-title-color m-b-4">
                 <?php _e('Master-detail', 'wpdatatables'); ?>
-                <i class="zmdi zmdi-help-outline" data-toggle="tooltip" data-placement="right"
+                <i class="wpdt-icon-info-circle-thin" data-toggle="tooltip" data-placement="right"
                    title="<?php _e('Enable this to turn the master-detail functionality on for this table.', 'wpdatatables'); ?>"></i>
             </h4>
             <div class="toggle-switch" data-ts-color="blue">
+                <input id="wdt-md-toggle-master-detail" type="checkbox" hidden="hidden">
                 <label for="wdt-md-toggle-master-detail"
                        class="ts-label"><?php _e('Enable master-detail functionality', 'wpdatatables'); ?></label>
-                <input id="wdt-md-toggle-master-detail" type="checkbox" hidden="hidden">
-                <label for="wdt-md-toggle-master-detail" class="ts-helper"></label>
             </div>
         </div>
         <!-- /Master-Detail checkbox-->
@@ -21,9 +20,9 @@
         <!-- Master-Detail Click Event Logic-->
         <div class="col-sm-4 wdt-md-click-event-logic-block hidden">
 
-            <h4 class="c-black m-b-20">
+            <h4 class="c-title-color m-b-4">
                 <?php _e('Open details on:', 'wpdatatables'); ?>
-                <i class="zmdi zmdi-help-outline" data-toggle="tooltip" data-placement="right"
+                <i class="wpdt-icon-info-circle-thin" data-toggle="tooltip" data-placement="right"
                    title="<?php _e('If the “Row click” is selected, users will be able to access details for a row by clicking it. If the “Button click” is selected, a new column will be added to the table, where each row would get a button opening the details for it.', 'wpdatatables'); ?>"></i>
             </h4>
 
@@ -44,9 +43,9 @@
         <!-- Master-Detail Render data in-->
         <div class="col-sm-4 wdt-md-render-data-in-block hidden">
 
-            <h4 class="c-black m-b-20">
+            <h4 class="c-title-color m-b-4">
                 <?php _e('Show details in:', 'wpdatatables'); ?>
-                <i class="zmdi zmdi-help-outline" data-toggle="tooltip" data-placement="right"
+                <i class="wpdt-icon-info-circle-thin" data-toggle="tooltip" data-placement="right"
                    title="<?php _e('If the “popup” option is selected, the details for the selected row will appear in a popup dialog on the same page. If you choose on of the the “Post” or “Page” options, users will be redirected to the chosen post or page (picked in a separate setting), which will be used as a template to render the details. Please note that you need to create the template post or page and fill it in with placeholders first, so that you could select it here', 'wpdatatables'); ?>"></i>
             </h4>
 
@@ -72,9 +71,9 @@
         <!-- Master-Detail Render page-->
         <div class="col-sm-4 wdt-md-render-page-block hidden">
 
-            <h4 class="c-black  m-b-20">
+            <h4 class="c-title-color m-b-4">
                 <?php _e('Template page', 'wpdatatables'); ?>
-                <i class="zmdi zmdi-help-outline" data-toggle="tooltip" data-placement="right"
+                <i class="wpdt-icon-info-circle-thin" data-toggle="tooltip" data-placement="right"
                    title="<?php _e('Choose which page will be used to showing the row details', 'wpdatatables'); ?>"></i>
             </h4>
 
@@ -100,9 +99,9 @@
         <!-- Master-Detail Render post-->
         <div class="col-sm-4 wdt-md-render-post-block hidden">
 
-            <h4 class="c-black  m-b-20">
+            <h4 class="c-title-color m-b-4">
                 <?php _e('Template post', 'wpdatatables'); ?>
-                <i class="zmdi zmdi-help-outline" data-toggle="tooltip" data-placement="right"
+                <i class="wpdt-icon-info-circle-thin" data-toggle="tooltip" data-placement="right"
                    title="<?php _e('Choose which post will be used to showing the row details', 'wpdatatables'); ?>"></i>
             </h4>
 
@@ -123,9 +122,9 @@
 
         <!-- Master-Detail Popup Title -->
         <div class="col-sm-4 wdt-md-popup-title-block hidden">
-            <h4 class="c-black m-b-20">
+            <h4 class="c-title-color m-b-4">
                 <?php _e('Popup Title', 'wpdatatables'); ?>
-                <i class="zmdi zmdi-help-outline" data-toggle="tooltip" data-placement="right"
+                <i class="wpdt-icon-info-circle-thin" data-toggle="tooltip" data-placement="right"
                    title="<?php _e('Enter a title for the popup with row details. If you leave the field blank, the default title is “Row details”', 'wpdatatables'); ?>"></i>
             </h4>
             <div class="form-group">

@@ -34,7 +34,7 @@ wpDataTablesHooks.onRenderDetails.push(function showDetailModal(tableDescription
                 !tableDescription.editable) {
 
                 // Event for showing Detail modal after clicking on table row
-                $(tableDescription.selector + '_wrapper table#' + tableDescription.tableId + ' tbody').on('hover', 'tr', function () {
+                $(tableDescription.selector + '_wrapper table#' + tableDescription.tableId + ' tbody').on('mouseenter', 'tr', function () {
 
                     $(this).css("cursor", "pointer");
 
@@ -135,7 +135,7 @@ wpDataTablesHooks.onRenderDetails.push(function sendDetails(tableDescription) {
         if (tableDescription.masterDetail) {
             if (tableDescription.masterDetailLogic === 'row' && !tableDescription.editable &&
             (tableDescription.masterDetailRender === 'wdtNewPage' || tableDescription.masterDetailRender === 'wdtNewPost')) {
-                $(tableDescription.selector + '_wrapper table#' + tableDescription.tableId + ' tbody').on('hover', 'tr', function () {
+                $(tableDescription.selector + '_wrapper table#' + tableDescription.tableId + ' tbody').on('mouseenter', 'tr', function () {
 
                     $(this).css("cursor", "pointer");
 

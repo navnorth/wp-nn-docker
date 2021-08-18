@@ -278,22 +278,16 @@ function callbackExtendSmallBlock($columnBlock, column) {
             column.masterDetailColumnOption = 1;
             jQuery(this)
               .removeClass('inactive')
-              .addClass('zmdi-layers')
-              .removeClass('zmdi-layers-off');
         } else {
             column.masterDetailColumnOption = 0;
             jQuery(this)
               .addClass('inactive')
-              .removeClass('zmdi-layers')
-              .addClass('zmdi-layers-off');
         }
     });
 
     if (!column.masterDetailColumnOption) {
         $columnBlock.find('i.wdt-toggle-show-details')
           .addClass('inactive')
-          .addClass('zmdi-layers-off')
-          .removeClass('zmdi-layers');
     }
 }
 

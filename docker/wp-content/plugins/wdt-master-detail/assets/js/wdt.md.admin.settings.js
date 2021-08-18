@@ -16,7 +16,7 @@
 
     // Activate plugin
     function activatePlugin() {
-      $('#wdt-activate-plugin-master-detail').html('Loading...');
+      $('#wdt-activate-plugin-master-detail').html('<i class="wpdt-icon-spinner9"></i>Loading...');
 
       let domain    = location.hostname;
       let subdomain = location.hostname;
@@ -41,26 +41,26 @@
             wdt_current_config.wdtPurchaseCodeStoreMasterDetail = $('#wdt-purchase-code-store-master-detail').val();
             wdtNotify('Success!', 'Plugin has been activated', 'success');
             $('#wdt-purchase-code-store-master-detail').prop('disabled', 'disabled');
-            $('#wdt-activate-plugin-master-detail').removeClass('btn-primary').addClass('btn-danger').html('Deactivate');
+            $('#wdt-activate-plugin-master-detail').removeClass('btn-primary').addClass('btn-danger').html('<i class="wpdt-icon-times-circle-full"></i>Deactivate');
           } else if (valid === false) {
             wdtNotify(wpdatatablesSettingsStrings.error, wpdatatablesSettingsStrings.purchaseCodeInvalid, 'danger');
-            $('#wdt-activate-plugin-master-detail').html('Activate');
+            $('#wdt-activate-plugin-master-detail').html('<i class="wpdt-icon-check-circle-full"></i>Activate');
           } else {
             wdtNotify(wpdatatablesSettingsStrings.error, wpdatatablesSettingsStrings.activation_domains_limit, 'danger');
-            jQuery('#wdt-activate-plugin-master-detail').html('Activate');
+            jQuery('#wdt-activate-plugin-master-detail').html('<i class="wpdt-icon-check-circle-full"></i>Activate');
           }
         },
         error: function () {
           wdt_current_config.wdtActivatedMasterDetail = 0;
           wdtNotify('Error!', 'Unable to activate the plugin. Please try again.', 'danger');
-          $('#wdt-activate-plugin-master-detail').html('Activate');
+          $('#wdt-activate-plugin-master-detail').html('<i class="wpdt-icon-check-circle-full"></i>Activate');
         }
       });
     }
 
     // Deactivate plugin
     function deactivatePlugin() {
-      $('#wdt-activate-plugin-master-detail').html('Loading...');
+      $('#wdt-activate-plugin-master-detail').html('<i class="wpdt-icon-spinner9"></i>Loading...');
 
       let domain    = location.hostname;
       let subdomain = location.hostname;
@@ -87,12 +87,12 @@
             wdt_current_config.wdtPurchaseCodeStoreMasterDetail = '';
             wdt_current_config.wdtActivatedMasterDetail = 0;
             $('#wdt-purchase-code-store-master-detail').prop('disabled', '').val('');
-            $('#wdt-activate-plugin-master-detail').removeClass('btn-danger').addClass('btn-primary').html('Activate');
+            $('#wdt-activate-plugin-master-detail').removeClass('btn-danger').addClass('btn-primary').html('<i class="wpdt-icon-check-circle-full"></i>Activate');
             $('.wdt-preload-layer').animateFadeOut();
             $('.wdt-purchase-code-master-detail').show();
           } else {
             wdtNotify(wpdatatablesSettingsStrings.error, wpdatatablesSettingsStrings.unable_to_deactivate_plugin, 'danger');
-            $('#wdt-activate-plugin-master-detail').html('Deactivate');
+            $('#wdt-activate-plugin-master-detail').html('<i class="wpdt-icon-times-circle-full"></i>Deactivate');
           }
         }
       });
@@ -107,11 +107,11 @@
 
         // Change the "Activate"/"Deactivate" button if plugin is activated/deactivated
         $('#wdt-purchase-code-store-master-detail').prop('disabled', 'disabled');
-        $('#wdt-activate-plugin-master-detail').removeClass('btn-primary').addClass('btn-danger').html('Deactivate');
+        $('#wdt-activate-plugin-master-detail').removeClass('btn-primary').addClass('btn-danger').html('<i class="wpdt-icon-times-circle-full"></i>Deactivate');
 
       } else {
         $('#wdt-purchase-code-store-master-detail').prop('disabled', '');
-        $('#wdt-activate-plugin-master-detail').removeClass('btn-danger').addClass('btn-primary').html('Activate');
+        $('#wdt-activate-plugin-master-detail').removeClass('btn-danger').addClass('btn-primary').html('<i class="wpdt-icon-check-circle-full"></i>Activate');
       }
     }
   });

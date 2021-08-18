@@ -5,17 +5,16 @@ namespace WDTMasterDetail;
 
 /**
  * @package Master-Detail Tables for wpDataTables
- * @version 1.1.1
+ * @version 1.3.1
  */
 /*
 Plugin Name: Master-Detail Tables for wpDataTables
-Plugin URI: https://wpdatatables.com/documentation/addons/master-detail/
+Plugin URI: https://wpdatatables.com/documentation/addons/master-detail-tables/
 Description: A wpDataTables addon which allows showing additional details for a specific row in a popup or a separate page or post. Handy when you would like to keep fewer columns in the table, while allowing user to access full details of particular entries.
-Version: 1.1.1
+Version: 1.3.1
 Author: TMS-Plugins
 Author URI: http://tms-plugins.com
 Text Domain: wpdatatables
-Domain Path: /languages
 */
 
 use Exception;
@@ -32,17 +31,15 @@ define('WDT_MD_ROOT_PATH', plugin_dir_path(__FILE__));
 // URL of WDT Master-detail plugin
 define('WDT_MD_ROOT_URL', plugin_dir_url(__FILE__));
 // Current version of WDT Master-detail plugin
-define('WDT_MD_VERSION', '1.1.1');
+define('WDT_MD_VERSION', '1.3.1');
 // Required wpDataTables version
-define('WDT_MD_VERSION_TO_CHECK', '2.8.2');
+define('WDT_MD_VERSION_TO_CHECK', '3.3');
 // Path to Master-detail templates
 define('WDT_MD_TEMPLATE_PATH', WDT_MD_ROOT_PATH . 'templates/');
 
 // Init Master-detail for wpDataTables add-on
 add_action('plugins_loaded', array('WDTMasterDetail\Plugin', 'init'), 10);
 
-register_deactivation_hook(__FILE__,  array('WDTMasterDetail\Plugin', 'deactivateMasterDetail'));
-register_uninstall_hook(__FILE__, array('WDTMasterDetail\Plugin', 'uninstallMasterDetail'));
 /**
  * Class Plugin
  * Main entry point of the wpDataTables Master-detail add-on
@@ -122,7 +119,10 @@ class Plugin
         add_filter('wpdatatables_columns_not_in_source', array('wdtMasterDetail\Plugin', 'removeColumnsNotInSource'), 10, 4);
 
         // Filter the content with detail placehodlers
-        add_filter( 'the_content', array('wdtMasterDetail\Plugin', 'filterTheContent'));
+        add_filter( 'the_content', array('wdtMasterDetail\Plugin', 'filterTheContent'), has_filter('tcb_remove_deprecated_strings') ? 999 : 10);
+
+        // Filter the content with detail placeholders for Thrive Architect
+        add_filter( 'tcb_remove_deprecated_strings', array('wdtMasterDetail\Plugin', 'filterTheContent'));
 
         // Filter column JSON definition
         add_filter('wpdatatables_extend_column_js_definition', array('wdtMasterDetail\Plugin', 'extendColumnJSONDefinition'), 10, 2);
@@ -179,8 +179,6 @@ class Plugin
             return false;
         }
 
-        self::createNewColumnType();
-
         return self::$initialized = true;
     }
 
@@ -223,15 +221,6 @@ class Plugin
         }
     }
 
-    /**
-     *  Create new column type in database - masterdetail
-     */
-    public static function createNewColumnType( )
-    {
-        global $wpdb;
-        $wpdb->query("ALTER TABLE " . $wpdb->prefix . "wpdatatables_columns MODIFY COLUMN column_type ENUM('autodetect','string','int','float','date','link','email','image','formula','datetime','time','masterdetail')");
-        $wpdb->update( $wpdb->prefix . "wpdatatables_columns", array( 'column_type' => 'masterdetail' ), array( 'orig_header' => 'masterdetail' ));
-    }
 
     /**
      *  Extend datacolumn object
@@ -351,7 +340,7 @@ class Plugin
      */
     public static function extendDataColumnProperties($dataColumnProperties, $wdtParameters, $key)
     {
-        if (isset($wdtParameters['masterDetailColumnOption'])) {
+        if (isset($wdtParameters['masterDetailColumnOption']) && isset($wdtParameters['masterDetailColumnOption'][$key]) && is_array($wdtParameters['masterDetailColumnOption'])) {
             $dataColumnProperties['masterDetailColumnOption'] =  $wdtParameters['masterDetailColumnOption'][$key];
         } else {
             $dataColumnProperties['masterDetailColumnOption'] = 1;
@@ -435,7 +424,8 @@ class Plugin
                 $columnsPositionInSourceCounts = array_count_values($columnsPositionInSource);
 
                 $tempMasterDetailPosition = $feColumn->pos;
-                $checkDuplicatePosition= $columnsPositionInSourceCounts[$tempMasterDetailPosition];
+                $keyExist = array_search($tempMasterDetailPosition,array_keys($columnsPositionInSourceCounts));
+                $checkDuplicatePosition= $keyExist ? $columnsPositionInSourceCounts[$tempMasterDetailPosition] : 0;
 
                 /** @var MasterDetailWDTColumn $wdtColumn */
                 $columnConfig = WDTConfigController::prepareDBColumnConfig($wdtColumn, $frontendColumns, $tableId);
@@ -990,6 +980,7 @@ class Plugin
             }
             foreach ($origHeaders as $origHeader) {
                 if (isset($detailsData[$origHeader])) {
+                    $detailsData[$origHeader] = apply_filters('wpdatatables_md_filter_details_data', $detailsData[$origHeader], $origHeader, $detailsData['wdt_md_id_table']);
                     $content = str_replace("%" . $origHeader . "%", $detailsData[$origHeader], $content);
                 }
             }
@@ -1004,129 +995,6 @@ class Plugin
         }
 
         return $content;
-    }
-
-    /**
-     * Update wpdatatables table in database after deactivate/uninstall Master-Detail add-on
-     * @param $advancedSettingsFromAllTables
-     * @param $action
-     * @return array
-     */
-    public static function updateWpDataTableInDatabase($advancedSettingsFromAllTables, $action){
-        global $wpdb;
-        $allTablesIDWithMD = [];
-        foreach ($advancedSettingsFromAllTables as $advancedSetting) {
-            $tempTableID = (int)$advancedSetting['id'];
-            $tempAdvancedSettings = json_decode($advancedSetting['advanced_settings']);
-            if ( $action == 'deactivate'){
-                if (isset($tempAdvancedSettings->masterDetail) && $tempAdvancedSettings->masterDetail == 1 &&
-                    isset($tempAdvancedSettings->masterDetailLogic) && $tempAdvancedSettings->masterDetailLogic == 'button'){
-
-                    $tempAdvancedSettings->masterDetailLogic = 'row';
-                    $tempAdvancedSettings = json_encode($tempAdvancedSettings);
-
-                    $wpdb->update(
-                        $wpdb->prefix . 'wpdatatables',
-                        array( 'advanced_settings' => $tempAdvancedSettings),
-                        array('id'=> $tempTableID)
-                    );
-
-                    $allTablesIDWithMD[] = $tempTableID;
-                }
-            } else if ( $action == 'uninstall') {
-                if (isset($tempAdvancedSettings->masterDetail)){
-                    unset($tempAdvancedSettings->masterDetail);
-                    unset($tempAdvancedSettings->masterDetailLogic);
-                    unset($tempAdvancedSettings->masterDetailRender);
-                    unset($tempAdvancedSettings->masterDetailRenderPage);
-                    unset($tempAdvancedSettings->masterDetailRenderPost);
-                    unset($tempAdvancedSettings->masterDetailPopupTitle);
-                    $tempAdvancedSettings = json_encode($tempAdvancedSettings);
-
-                    $wpdb->update(
-                        $wpdb->prefix . 'wpdatatables',
-                        array( 'advanced_settings' => $tempAdvancedSettings),
-                        array('id'=> $tempTableID)
-                    );
-
-                    $allTablesIDWithMD[] = $tempTableID;
-                }
-            }
-        }
-        return $allTablesIDWithMD;
-    }
-
-    /**
-     * Update wpdatatables_columns table in database after deactivate/uninstall Master-Detail add-on
-     * @param $allTablesIDWithMD
-     */
-    public static function updateWpDataTableColumnsInDatabase($allTablesIDWithMD){
-        global $wpdb;
-        $columnPosition   = '';
-        $tableID          = '';
-        foreach ($allTablesIDWithMD as $tableIDWithMD) {
-            $query = "SELECT id, table_id, orig_header, pos 
-                          FROM {$wpdb->prefix}wpdatatables_columns 
-                          WHERE {$wpdb->prefix}wpdatatables_columns.table_id = {$tableIDWithMD}";
-
-            $tempColumnFields= $wpdb->get_results($query, ARRAY_A);
-            foreach ($tempColumnFields as $tempColumnField){
-                if ($tempColumnField['orig_header']== 'masterdetail'){
-                    $wpdb->delete(
-                        $wpdb->prefix . "wpdatatables_columns",
-                        array(
-                            'orig_header' => $tempColumnField['orig_header'],
-                            'table_id' => $tempColumnField['table_id'],
-                            'id' => $tempColumnField['id']
-                        )
-                    );
-                    $columnPosition   = (int)$tempColumnField['pos'];
-                    $tableID          = (int)$tempColumnField['table_id'];
-                }
-            }
-            $wpdb->query(
-                "UPDATE {$wpdb->prefix}wpdatatables_columns
-                           SET {$wpdb->prefix}wpdatatables_columns.pos = {$wpdb->prefix}wpdatatables_columns.pos-1
-                           WHERE {$wpdb->prefix}wpdatatables_columns.table_id = {$tableID}
-                           AND {$wpdb->prefix}wpdatatables_columns.pos > {$columnPosition}"
-            );
-        }
-    }
-
-    /**
-     * Deactivate of Master-Detail add-on
-     */
-    public static function deactivateMasterDetail(){
-        global $wpdb;
-        $action = 'deactivate';
-
-        $query = "SELECT id, advanced_settings FROM {$wpdb->prefix}wpdatatables WHERE {$wpdb->prefix}wpdatatables.id > 0";
-
-        $advancedSettingsFromAllTables= $wpdb->get_results($query, ARRAY_A);
-
-        $allTablesIDWithMD = self::updateWpDataTableInDatabase($advancedSettingsFromAllTables, $action);
-
-        if (!empty($allTablesIDWithMD)){
-            self::updateWpDataTableColumnsInDatabase($allTablesIDWithMD);
-        }
-    }
-
-    /**
-     * Uninstall Master-Detail add-on
-     */
-    public static function uninstallMasterDetail(){
-        global $wpdb;
-        $action = 'uninstall';
-
-        $query = "SELECT id, advanced_settings FROM {$wpdb->prefix}wpdatatables WHERE {$wpdb->prefix}wpdatatables.id > 0";
-
-        $advancedSettingsFromAllTables= $wpdb->get_results($query, ARRAY_A);
-
-        $allTablesIDWithMD = self::updateWpDataTableInDatabase($advancedSettingsFromAllTables, $action);
-
-        if (!empty($allTablesIDWithMD)){
-            self::updateWpDataTableColumnsInDatabase($allTablesIDWithMD);
-        }
     }
 
     /**
