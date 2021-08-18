@@ -1,7 +1,7 @@
 <div class="col-sm-6 wdt-md-column-block hidden">
-    <h4 class="c-black m-b-20">
+    <h4 class="c-title-color m-b-4">
         <?php _e('Master-detail column', 'wpdatatables'); ?>
-        <i class="zmdi zmdi-help-outline" data-popover-content="#master-detail-column"
+        <i class="wpdt-icon-info-circle-thin" data-popover-content="#master-detail-column"
            data-toggle="html-popover" data-trigger="hover" data-placement="right"></i>
     </h4>
 
@@ -19,10 +19,9 @@
 
     <div class="form-group">
         <div class="toggle-switch" data-ts-color="blue">
+            <input id="wdt-md-column" type="checkbox" hidden="hidden">
             <label for="wdt-md-column"
                    class="ts-label"><?php _e('Add to the details section', 'wpdatatables'); ?></label>
-            <input id="wdt-md-column" type="checkbox" hidden="hidden">
-            <label for="wdt-md-column" class="ts-helper"></label>
         </div>
     </div>
 

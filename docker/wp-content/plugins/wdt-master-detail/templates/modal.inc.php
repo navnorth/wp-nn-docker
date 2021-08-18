@@ -3,7 +3,7 @@
 <!-- .wpdt-c -->
 <div class="wpdt-c">
     <!-- .wdt-frontend-modal -->
-    <div id="wdt-md-modal" class="modal fade wdt-md-modal" style="display: none" data-backdrop="static"
+    <div id="wdt-md-modal" class="modal fade wdt-md-modal" style="display: none"
          data-keyboard="false" tabindex="-1" role="dialog" aria-hidden="true">
 
         <!-- .modal-dialog -->
