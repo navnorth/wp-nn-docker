@@ -25,3 +25,6 @@
 [submodule "docker/wp-content/plugins/wdt-compare-details"]
 	path = docker/wp-content/plugins/wdt-compare-details
 	url = https://github.com/navnorth/wdt-compare-details.git
+[submodule "docker/wp-content/plugins/wp-oer"]
+	path = docker/wp-content/plugins/wp-oer
+	url = https://github.com/navnorth/wp-oer.git
